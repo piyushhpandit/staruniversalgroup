@@ -9,7 +9,7 @@ import Nepal from '../../assets/travel/Nepal.jpeg'
 import TravelHeader from './travelHeader';
 import hero2 from '../../assets/nepal-tour.jpg'
 
-const StarUniversalTravel = () => {
+const Travel = () => {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [hoveredService, setHoveredService] = useState(null);
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
@@ -801,4 +801,4 @@ const StarUniversalTravel = () => {
   );
 };
 
-export default StarUniversalTravel;
+export default Travel;
