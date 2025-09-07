@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { theme, createServiceBackground } from '../../utils/theme';
 import EventsHeader from './eventHeader';
 import Footer from '../../components/footer';
+import hero from '../../assets/wedding hero.jpg'
 
 const Events = () => {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
@@ -75,8 +76,8 @@ const Events = () => {
 
   const stats = [
     { number: '500+', label: 'Events Completed' },
-    { number: '50+', label: 'Happy Clients' },
-    { number: '5+', label: 'Years Experience' },
+    { number: '300+', label: 'Happy Clients' },
+    { number: '13+', label: 'Years Experience' },
     { number: '100%', label: 'Satisfaction Rate' }
   ];
 
@@ -154,6 +155,7 @@ const Events = () => {
           animation: 'float 6s ease-in-out infinite reverse',
           boxShadow: `0 0 10px ${theme.services.events.secondary}`,
           zIndex: 0
+
         }}
       />
 
@@ -163,9 +165,27 @@ const Events = () => {
           padding: `8rem ${theme.spacing.lg} 4rem`,
           textAlign: 'center',
           position: 'relative',
-          zIndex: 1
+          zIndex: 1,
+          backgroundImage: `url(${hero})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
         }}
       >
+        <div
+          style={{
+            content: '""',
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            background: `
+        linear-gradient(135deg, rgba(0,0,0,0.8), rgba(0,0,0,0.6)),
+        linear-gradient(135deg, rgba(255,68,68,0.2), rgba(255,136,0,0.1))
+      `,
+            zIndex: -1
+          }}
+        />
         <div
           style={{
             maxWidth: '800px',
@@ -195,10 +215,10 @@ const Events = () => {
               animation: 'slideUp 1s ease-out 0.2s both'
             }}
           >
-            Professional event planning for every occasion. From corporate conferences to dream weddings, 
+            Professional event planning for every occasion. From corporate conferences to dream weddings,
             we create unforgettable experiences that exceed expectations.
           </p>
-          
+
           <div
             style={{
               display: 'flex',
@@ -261,396 +281,396 @@ const Events = () => {
             </button>
           </div>
         </div>
-      </section>
+      </section >
 
-      {/* Stats Section */}
-      <section
+  {/* Stats Section */ }
+  < section
+style = {{
+  padding: `${theme.spacing.xl} ${theme.spacing.lg}`,
+    position: 'relative',
+      zIndex: 1
+}}
+      >
+  <div
+    style={{
+      maxWidth: '1200px',
+      margin: '0 auto',
+      display: 'grid',
+      gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+      gap: theme.spacing.lg,
+      textAlign: 'center'
+    }}
+  >
+    {stats.map((stat, index) => (
+      <div
+        key={index}
         style={{
-          padding: `${theme.spacing.xl} ${theme.spacing.lg}`,
-          position: 'relative',
-          zIndex: 1
+          background: theme.colors.dark.card,
+          backdropFilter: 'blur(20px)',
+          border: `1px solid ${theme.colors.border.default}`,
+          borderRadius: theme.borderRadius.xl,
+          padding: theme.spacing.xl,
+          transition: theme.transitions.medium,
+          animation: `slideUp 1s ease-out ${index * 0.1 + 0.6}s both`
+        }}
+        onMouseEnter={(e) => {
+          e.target.style.transform = 'translateY(-5px)';
+          e.target.style.border = `1px solid ${theme.services.events.primary}40`;
+          e.target.style.boxShadow = `0 10px 30px ${theme.services.events.primary}20`;
+        }}
+        onMouseLeave={(e) => {
+          e.target.style.transform = 'translateY(0)';
+          e.target.style.border = `1px solid ${theme.colors.border.default}`;
+          e.target.style.boxShadow = 'none';
         }}
       >
-        <div
+        <h3
           style={{
-            maxWidth: '1200px',
-            margin: '0 auto',
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-            gap: theme.spacing.lg,
-            textAlign: 'center'
+            ...theme.typography.heading.h2,
+            color: theme.services.events.primary,
+            marginBottom: theme.spacing.sm
           }}
         >
-          {stats.map((stat, index) => (
-            <div
-              key={index}
-              style={{
-                background: theme.colors.dark.card,
-                backdropFilter: 'blur(20px)',
-                border: `1px solid ${theme.colors.border.default}`,
-                borderRadius: theme.borderRadius.xl,
-                padding: theme.spacing.xl,
-                transition: theme.transitions.medium,
-                animation: `slideUp 1s ease-out ${index * 0.1 + 0.6}s both`
-              }}
-              onMouseEnter={(e) => {
-                e.target.style.transform = 'translateY(-5px)';
-                e.target.style.border = `1px solid ${theme.services.events.primary}40`;
-                e.target.style.boxShadow = `0 10px 30px ${theme.services.events.primary}20`;
-              }}
-              onMouseLeave={(e) => {
-                e.target.style.transform = 'translateY(0)';
-                e.target.style.border = `1px solid ${theme.colors.border.default}`;
-                e.target.style.boxShadow = 'none';
-              }}
-            >
-              <h3
-                style={{
-                  ...theme.typography.heading.h2,
-                  color: theme.services.events.primary,
-                  marginBottom: theme.spacing.sm
-                }}
-              >
-                {stat.number}
-              </h3>
-              <p
-                style={{
-                  ...theme.typography.body.medium,
-                  color: theme.colors.text.secondary
-                }}
-              >
-                {stat.label}
-              </p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Services Section */}
-      <section
-        style={{
-          padding: `${theme.spacing.xxl} ${theme.spacing.lg}`,
-          position: 'relative',
-          zIndex: 1
-        }}
-      >
-        <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
-          <div
-            style={{
-              textAlign: 'center',
-              marginBottom: theme.spacing.xxl,
-              animation: 'slideUp 1s ease-out 0.8s both'
-            }}
-          >
-            <h2
-              style={{
-                ...theme.typography.heading.h1,
-                color: theme.colors.text.primary,
-                marginBottom: theme.spacing.lg
-              }}
-            >
-              Our Services
-            </h2>
-            <p
-              style={{
-                ...theme.typography.body.large,
-                color: theme.colors.text.secondary,
-                maxWidth: '600px',
-                margin: '0 auto'
-              }}
-            >
-              From intimate gatherings to grand celebrations, we specialize in creating memorable events 
-              tailored to your vision and budget.
-            </p>
-          </div>
-
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-              gap: theme.spacing.xl
-            }}
-          >
-            {services.map((service, index) => (
-              <div
-                key={index}
-                style={{
-                  background: hoveredService === index 
-                    ? theme.colors.dark.cardHover 
-                    : theme.colors.dark.card,
-                  backdropFilter: 'blur(20px)',
-                  border: hoveredService === index 
-                    ? `2px solid ${theme.services.events.primary}40`
-                    : `1px solid ${theme.colors.border.default}`,
-                  borderRadius: theme.borderRadius.xl,
-                  padding: theme.spacing.xl,
-                  transition: theme.transitions.bouncy,
-                  transform: hoveredService === index ? 'translateY(-10px)' : 'translateY(0)',
-                  boxShadow: hoveredService === index 
-                    ? `0 20px 40px ${theme.services.events.primary}20`
-                    : theme.shadows.md,
-                  cursor: 'pointer',
-                  animation: `slideUp 1s ease-out ${index * 0.1 + 1}s both`
-                }}
-                onMouseEnter={() => setHoveredService(index)}
-                onMouseLeave={() => setHoveredService(null)}
-              >
-                <div
-                  style={{
-                    fontSize: '3rem',
-                    marginBottom: theme.spacing.lg,
-                    display: 'inline-block',
-                    padding: theme.spacing.md,
-                    background: hoveredService === index 
-                      ? theme.services.events.gradient 
-                      : theme.colors.dark.cardHover,
-                    borderRadius: theme.borderRadius.full,
-                    transition: theme.transitions.slow,
-                    transform: hoveredService === index ? 'rotate(360deg) scale(1.1)' : 'rotate(0deg)'
-                  }}
-                >
-                  {service.icon}
-                </div>
-                
-                <h3
-                  style={{
-                    ...theme.typography.heading.h3,
-                    color: hoveredService === index ? theme.services.events.primary : theme.colors.text.primary,
-                    marginBottom: theme.spacing.md,
-                    transition: theme.transitions.medium
-                  }}
-                >
-                  {service.title}
-                </h3>
-                
-                <p
-                  style={{
-                    ...theme.typography.body.medium,
-                    color: theme.colors.text.secondary,
-                    marginBottom: theme.spacing.lg,
-                    lineHeight: '1.6'
-                  }}
-                >
-                  {service.description}
-                </p>
-                
-                <div style={{ display: 'flex', flexDirection: 'column', gap: theme.spacing.xs }}>
-                  {service.features.map((feature, featureIndex) => (
-                    <div
-                      key={featureIndex}
-                      style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: theme.spacing.sm,
-                        color: theme.colors.text.secondary,
-                        fontSize: '0.9rem'
-                      }}
-                    >
-                      <span style={{ color: theme.services.events.primary }}>✓</span>
-                      {feature}
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Testimonials Section */}
-      <section
-        style={{
-          padding: `${theme.spacing.xxl} ${theme.spacing.lg}`,
-          position: 'relative',
-          zIndex: 1
-        }}
-      >
-        <div style={{ maxWidth: '800px', margin: '0 auto', textAlign: 'center' }}>
-          <h2
-            style={{
-              ...theme.typography.heading.h1,
-              color: theme.colors.text.primary,
-              marginBottom: theme.spacing.xxl
-            }}
-          >
-            What Our Clients Say
-          </h2>
-          
-          <div
-            style={{
-              background: theme.colors.dark.card,
-              backdropFilter: 'blur(20px)',
-              border: `1px solid ${theme.colors.border.default}`,
-              borderRadius: theme.borderRadius.xl,
-              padding: theme.spacing.xxl,
-              position: 'relative',
-              minHeight: '200px'
-            }}
-          >
-            {testimonials.map((testimonial, index) => (
-              <div
-                key={index}
-                style={{
-                  position: 'absolute',
-                  top: theme.spacing.xxl,
-                  left: theme.spacing.xxl,
-                  right: theme.spacing.xxl,
-                  opacity: activeTestimonial === index ? 1 : 0,
-                  transition: 'opacity 0.5s ease',
-                  pointerEvents: activeTestimonial === index ? 'auto' : 'none'
-                }}
-              >
-                <div style={{ marginBottom: theme.spacing.lg }}>
-                  {[...Array(testimonial.rating)].map((_, starIndex) => (
-                    <span
-                      key={starIndex}
-                      style={{
-                        color: theme.services.events.primary,
-                        fontSize: '1.5rem',
-                        marginRight: theme.spacing.xs
-                      }}
-                    >
-                      ⭐
-                    </span>
-                  ))}
-                </div>
-                
-                <p
-                  style={{
-                    ...theme.typography.body.large,
-                    color: theme.colors.text.secondary,
-                    fontStyle: 'italic',
-                    marginBottom: theme.spacing.lg,
-                    lineHeight: '1.7'
-                  }}
-                >
-                  "{testimonial.text}"
-                </p>
-                
-                <div>
-                  <h4
-                    style={{
-                      color: theme.colors.text.primary,
-                      fontSize: '1.1rem',
-                      fontWeight: '600',
-                      marginBottom: theme.spacing.xs
-                    }}
-                  >
-                    {testimonial.name}
-                  </h4>
-                  <p
-                    style={{
-                      color: theme.services.events.primary,
-                      fontSize: '0.9rem'
-                    }}
-                  >
-                    {testimonial.company}
-                  </p>
-                </div>
-              </div>
-            ))}
-            
-            {/* Testimonial Navigation Dots */}
-            <div
-              style={{
-                position: 'absolute',
-                bottom: theme.spacing.lg,
-                left: '50%',
-                transform: 'translateX(-50%)',
-                display: 'flex',
-                gap: theme.spacing.sm
-              }}
-            >
-              {testimonials.map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => setActiveTestimonial(index)}
-                  style={{
-                    width: '12px',
-                    height: '12px',
-                    borderRadius: '50%',
-                    border: 'none',
-                    background: activeTestimonial === index 
-                      ? theme.services.events.primary 
-                      : theme.colors.border.default,
-                    cursor: 'pointer',
-                    transition: theme.transitions.medium
-                  }}
-                />
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section
-        style={{
-          padding: `${theme.spacing.xxl} ${theme.spacing.lg}`,
-          textAlign: 'center',
-          position: 'relative',
-          zIndex: 1
-        }}
-      >
-        <div
+          {stat.number}
+        </h3>
+        <p
           style={{
-            maxWidth: '600px',
-            margin: '0 auto',
-            background: theme.colors.dark.card,
+            ...theme.typography.body.medium,
+            color: theme.colors.text.secondary
+          }}
+        >
+          {stat.label}
+        </p>
+      </div>
+    ))}
+  </div>
+      </section >
+
+  {/* Services Section */ }
+  < section
+style = {{
+  padding: `${theme.spacing.xxl} ${theme.spacing.lg}`,
+    position: 'relative',
+      zIndex: 1
+}}
+      >
+  <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+    <div
+      style={{
+        textAlign: 'center',
+        marginBottom: theme.spacing.xxl,
+        animation: 'slideUp 1s ease-out 0.8s both'
+      }}
+    >
+      <h2
+        style={{
+          ...theme.typography.heading.h1,
+          color: theme.colors.text.primary,
+          marginBottom: theme.spacing.lg
+        }}
+      >
+        Our Services
+      </h2>
+      <p
+        style={{
+          ...theme.typography.body.large,
+          color: theme.colors.text.secondary,
+          maxWidth: '600px',
+          margin: '0 auto'
+        }}
+      >
+        From intimate gatherings to grand celebrations, we specialize in creating memorable events
+        tailored to your vision and budget.
+      </p>
+    </div>
+
+    <div
+      style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+        gap: theme.spacing.xl
+      }}
+    >
+      {services.map((service, index) => (
+        <div
+          key={index}
+          style={{
+            background: hoveredService === index
+              ? theme.colors.dark.cardHover
+              : theme.colors.dark.card,
             backdropFilter: 'blur(20px)',
-            border: `1px solid ${theme.services.events.primary}40`,
+            border: hoveredService === index
+              ? `2px solid ${theme.services.events.primary}40`
+              : `1px solid ${theme.colors.border.default}`,
             borderRadius: theme.borderRadius.xl,
-            padding: theme.spacing.xxl
+            padding: theme.spacing.xl,
+            transition: theme.transitions.bouncy,
+            transform: hoveredService === index ? 'translateY(-10px)' : 'translateY(0)',
+            boxShadow: hoveredService === index
+              ? `0 20px 40px ${theme.services.events.primary}20`
+              : theme.shadows.md,
+            cursor: 'pointer',
+            animation: `slideUp 1s ease-out ${index * 0.1 + 1}s both`
           }}
+          onMouseEnter={() => setHoveredService(index)}
+          onMouseLeave={() => setHoveredService(null)}
         >
-          <h2
+          <div
             style={{
-              ...theme.typography.heading.h2,
-              color: theme.colors.text.primary,
-              marginBottom: theme.spacing.lg
+              fontSize: '3rem',
+              marginBottom: theme.spacing.lg,
+              display: 'inline-block',
+              padding: theme.spacing.md,
+              background: hoveredService === index
+                ? theme.services.events.gradient
+                : theme.colors.dark.cardHover,
+              borderRadius: theme.borderRadius.full,
+              transition: theme.transitions.slow,
+              transform: hoveredService === index ? 'rotate(360deg) scale(1.1)' : 'rotate(0deg)'
             }}
           >
-            Ready to Create Something Amazing?
-          </h2>
+            {service.icon}
+          </div>
+
+          <h3
+            style={{
+              ...theme.typography.heading.h3,
+              color: hoveredService === index ? theme.services.events.primary : theme.colors.text.primary,
+              marginBottom: theme.spacing.md,
+              transition: theme.transitions.medium
+            }}
+          >
+            {service.title}
+          </h3>
+
+          <p
+            style={{
+              ...theme.typography.body.medium,
+              color: theme.colors.text.secondary,
+              marginBottom: theme.spacing.lg,
+              lineHeight: '1.6'
+            }}
+          >
+            {service.description}
+          </p>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: theme.spacing.xs }}>
+            {service.features.map((feature, featureIndex) => (
+              <div
+                key={featureIndex}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: theme.spacing.sm,
+                  color: theme.colors.text.secondary,
+                  fontSize: '0.9rem'
+                }}
+              >
+                <span style={{ color: theme.services.events.primary }}>✓</span>
+                {feature}
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+      </section >
+
+  {/* Testimonials Section */ }
+  < section
+style = {{
+  padding: `${theme.spacing.xxl} ${theme.spacing.lg}`,
+    position: 'relative',
+      zIndex: 1
+}}
+      >
+  <div style={{ maxWidth: '800px', margin: '0 auto', textAlign: 'center' }}>
+    <h2
+      style={{
+        ...theme.typography.heading.h1,
+        color: theme.colors.text.primary,
+        marginBottom: theme.spacing.xxl
+      }}
+    >
+      What Our Clients Say
+    </h2>
+
+    <div
+      style={{
+        background: theme.colors.dark.card,
+        backdropFilter: 'blur(20px)',
+        border: `1px solid ${theme.colors.border.default}`,
+        borderRadius: theme.borderRadius.xl,
+        padding: theme.spacing.xxl,
+        position: 'relative',
+        minHeight: '200px'
+      }}
+    >
+      {testimonials.map((testimonial, index) => (
+        <div
+          key={index}
+          style={{
+            position: 'absolute',
+            top: theme.spacing.xxl,
+            left: theme.spacing.xxl,
+            right: theme.spacing.xxl,
+            opacity: activeTestimonial === index ? 1 : 0,
+            transition: 'opacity 0.5s ease',
+            pointerEvents: activeTestimonial === index ? 'auto' : 'none'
+          }}
+        >
+          <div style={{ marginBottom: theme.spacing.lg }}>
+            {[...Array(testimonial.rating)].map((_, starIndex) => (
+              <span
+                key={starIndex}
+                style={{
+                  color: theme.services.events.primary,
+                  fontSize: '1.5rem',
+                  marginRight: theme.spacing.xs
+                }}
+              >
+                ⭐
+              </span>
+            ))}
+          </div>
+
           <p
             style={{
               ...theme.typography.body.large,
               color: theme.colors.text.secondary,
-              marginBottom: theme.spacing.xl
+              fontStyle: 'italic',
+              marginBottom: theme.spacing.lg,
+              lineHeight: '1.7'
             }}
           >
-            Let's discuss your event vision and make it a reality. Get in touch for a free consultation.
+            "{testimonial.text}"
           </p>
-          <button
-            style={{
-              background: theme.services.events.gradient,
-              border: 'none',
-              color: theme.colors.text.primary,
-              padding: `${theme.spacing.md} ${theme.spacing.xxl}`,
-              borderRadius: theme.borderRadius.md,
-              fontSize: '1.1rem',
-              fontWeight: '600',
-              cursor: 'pointer',
-              transition: theme.transitions.medium,
-              fontFamily: theme.typography.fontFamily,
-              boxShadow: `0 8px 25px ${theme.services.events.primary}35`
-            }}
-            onMouseEnter={(e) => {
-              e.target.style.transform = 'translateY(-3px) scale(1.02)';
-              e.target.style.boxShadow = `0 15px 35px ${theme.services.events.primary}45`;
-            }}
-            onMouseLeave={(e) => {
-              e.target.style.transform = 'translateY(0) scale(1)';
-              e.target.style.boxShadow = `0 8px 25px ${theme.services.events.primary}35`;
-            }}
-          >
-            Get Started Today
-          </button>
-        </div>
-      </section>
 
-      <Footer />
+          <div>
+            <h4
+              style={{
+                color: theme.colors.text.primary,
+                fontSize: '1.1rem',
+                fontWeight: '600',
+                marginBottom: theme.spacing.xs
+              }}
+            >
+              {testimonial.name}
+            </h4>
+            <p
+              style={{
+                color: theme.services.events.primary,
+                fontSize: '0.9rem'
+              }}
+            >
+              {testimonial.company}
+            </p>
+          </div>
+        </div>
+      ))}
+
+      {/* Testimonial Navigation Dots */}
+      <div
+        style={{
+          position: 'absolute',
+          bottom: theme.spacing.lg,
+          left: '50%',
+          transform: 'translateX(-50%)',
+          display: 'flex',
+          gap: theme.spacing.sm
+        }}
+      >
+        {testimonials.map((_, index) => (
+          <button
+            key={index}
+            onClick={() => setActiveTestimonial(index)}
+            style={{
+              width: '12px',
+              height: '12px',
+              borderRadius: '50%',
+              border: 'none',
+              background: activeTestimonial === index
+                ? theme.services.events.primary
+                : theme.colors.border.default,
+              cursor: 'pointer',
+              transition: theme.transitions.medium
+            }}
+          />
+        ))}
+      </div>
     </div>
+  </div>
+      </section >
+
+  {/* CTA Section */ }
+  < section
+style = {{
+  padding: `${theme.spacing.xxl} ${theme.spacing.lg}`,
+    textAlign: 'center',
+      position: 'relative',
+        zIndex: 1
+}}
+      >
+  <div
+    style={{
+      maxWidth: '600px',
+      margin: '0 auto',
+      background: theme.colors.dark.card,
+      backdropFilter: 'blur(20px)',
+      border: `1px solid ${theme.services.events.primary}40`,
+      borderRadius: theme.borderRadius.xl,
+      padding: theme.spacing.xxl
+    }}
+  >
+    <h2
+      style={{
+        ...theme.typography.heading.h2,
+        color: theme.colors.text.primary,
+        marginBottom: theme.spacing.lg
+      }}
+    >
+      Ready to Create Something Amazing?
+    </h2>
+    <p
+      style={{
+        ...theme.typography.body.large,
+        color: theme.colors.text.secondary,
+        marginBottom: theme.spacing.xl
+      }}
+    >
+      Let's discuss your event vision and make it a reality. Get in touch for a free consultation.
+    </p>
+    <button
+      style={{
+        background: theme.services.events.gradient,
+        border: 'none',
+        color: theme.colors.text.primary,
+        padding: `${theme.spacing.md} ${theme.spacing.xxl}`,
+        borderRadius: theme.borderRadius.md,
+        fontSize: '1.1rem',
+        fontWeight: '600',
+        cursor: 'pointer',
+        transition: theme.transitions.medium,
+        fontFamily: theme.typography.fontFamily,
+        boxShadow: `0 8px 25px ${theme.services.events.primary}35`
+      }}
+      onMouseEnter={(e) => {
+        e.target.style.transform = 'translateY(-3px) scale(1.02)';
+        e.target.style.boxShadow = `0 15px 35px ${theme.services.events.primary}45`;
+      }}
+      onMouseLeave={(e) => {
+        e.target.style.transform = 'translateY(0) scale(1)';
+        e.target.style.boxShadow = `0 8px 25px ${theme.services.events.primary}35`;
+      }}
+    >
+      Get Started Today
+    </button>
+  </div>
+      </section >
+
+  <Footer />
+    </div >
   );
 };
 

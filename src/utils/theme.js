@@ -185,3 +185,6 @@ export const createHoverCard = (service, isHovered) => ({
     ? `0 25px 50px -12px ${theme.services[service].primary}25, 0 0 0 1px ${theme.services[service].primary}20`
     : theme.shadows.lg
 });
+
+
+export default theme;

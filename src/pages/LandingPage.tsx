@@ -1,30 +1,37 @@
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import logo from '../assets/logo.png';
+import logo from '../assets/SUGLogo.png';
+import logotravel from '../assets/SUGTravel.jpg'
+import logoFoundatiton from '../assets/SUGFoundation.png'
+import logoEvents from '../assets/SUGEvent.jpg'
+
 const options = [
   {
-    title: 'Star Universal Events',
+    title: 'Star Universal Event Planner',
     route: '/events',
     description: 'Professional event planning for every occasion.',
     icon: '🎉',
+    logo: logoEvents,
     gradient: 'linear-gradient(135deg, #ff4444, #ff8800)',
     color: '#ff4444'
+  },
+
+  {
+    title: 'Star Universal Tour & Travel',
+    route: '/travel',
+    description: 'Explore the world with our travel services.',
+    logo: logotravel,
+    gradient: 'linear-gradient(135deg, #ee44aa, #cc2288)',
+    color: '#ee44aa'
   },
   {
     title: 'Star Universal Foundation',
     route: '/foundation',
     description: 'Empowering communities and making a difference.',
     icon: '🤝',
+    logo: logoFoundatiton,
     gradient: 'linear-gradient(135deg, #ffdd00, #ffaa00)',
     color: '#ffaa00'
-  },
-  {
-    title: 'Star Universal Travel',
-    route: '/travel',
-    description: 'Explore the world with our travel services.',
-    icon: '✈️',
-    gradient: 'linear-gradient(135deg, #ee44aa, #cc2288)',
-    color: '#ee44aa'
   },
 ];
 
@@ -135,7 +142,7 @@ export default function LandingPage() {
           }
         `}
       </style>
-      
+
       {/* Logo with glow effect */}
       <div
         style={{
@@ -148,7 +155,7 @@ export default function LandingPage() {
           src={logo}
           alt="Star Universal Logo"
           style={{
-            
+
             width: "10rem",
             height: "auto",
             filter: "drop-shadow(0 0 20px rgba(255, 68, 68, 0.3)) drop-shadow(0 0 40px rgba(255, 221, 0, 0.2)) drop-shadow(0 0 60px rgba(238, 68, 170, 0.1))",
@@ -156,7 +163,7 @@ export default function LandingPage() {
           }}
         />
       </div>
-      
+
       {/* Main heading with gradient text */}
       <div style={{ textAlign: "center", marginBottom: "3rem" }}>
         <h1
@@ -174,7 +181,7 @@ export default function LandingPage() {
             textShadow: "0 0 30px rgba(255, 255, 255, 0.1)",
           }}
         >
-          Star Universal Group
+          STAR UNIVERSAL GROUP
         </h1>
         <p
           style={{
@@ -189,7 +196,7 @@ export default function LandingPage() {
           Illuminating possibilities across events, foundation work, and travel experiences
         </p>
       </div>
-      
+
       {/* Service cards */}
       <div
         style={{
@@ -205,11 +212,11 @@ export default function LandingPage() {
           <div
             key={opt.route}
             style={{
-              background: hoveredCard === index 
+              background: hoveredCard === index
                 ? `linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%)`
                 : "rgba(255, 255, 255, 0.05)",
               backdropFilter: "blur(20px)",
-              border: hoveredCard === index 
+              border: hoveredCard === index
                 ? `2px solid ${opt.color}40`
                 : "1px solid rgba(255, 255, 255, 0.1)",
               borderRadius: "20px",
@@ -218,7 +225,7 @@ export default function LandingPage() {
               cursor: "pointer",
               transition: "all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)",
               transform: hoveredCard === index ? "translateY(-10px) scale(1.02)" : "translateY(0) scale(1)",
-              boxShadow: hoveredCard === index 
+              boxShadow: hoveredCard === index
                 ? `0 25px 50px -12px ${opt.color}25, 0 0 0 1px ${opt.color}20`
                 : "0 10px 30px rgba(0, 0, 0, 0.2)",
               position: "relative",
@@ -243,25 +250,45 @@ export default function LandingPage() {
                 }}
               />
             )}
-            
+
             {/* Content */}
             <div style={{ position: "relative", zIndex: 1 }}>
               <div
                 style={{
-                  fontSize: "3rem",
                   marginBottom: "1.5rem",
-                  display: "inline-block",
-                  padding: "1rem",
+                  display: "inline-flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  width: "120px",
+                  height: "120px",
                   background: hoveredCard === index ? opt.gradient : "rgba(255, 255, 255, 0.1)",
                   borderRadius: "50%",
-                  transform: hoveredCard === index ? "rotate(360deg) scale(1.1)" : "rotate(0deg) scale(1)",
+                  // transform: hoveredCard === index ? "rotate(360deg) scale(1.1)" : "rotate(0deg) scale(1)",
                   transition: "all 0.6s ease",
                   boxShadow: hoveredCard === index ? `0 0 30px ${opt.color}40` : "none",
+                  padding: "15px", // Add padding to ensure logos don't touch the edges
                 }}
               >
-                {opt.icon}
+                {/* Display either emoji icon or image logo */}
+                {opt.logo ? (
+                  <img
+                    src={opt.logo}
+                    alt={`${opt.title} logo`}
+                    style={{
+                      width: "100px",
+                      height: "100px",
+                      objectFit: "contain", // Changed to contain to prevent cropping
+                      borderRadius: "50%", // Make it circular like the container
+                      padding: "5px", // Add padding inside the image
+                      backgroundColor: "rgba(255, 255, 255, 0.9)", // White background for better visibility
+                      border: "2px solid rgba(255, 255, 255, 0.2)", // Subtle border
+                    }}
+                  />
+                ) : (
+                  <span style={{ fontSize: "3rem" }}>{opt.icon}</span>
+                )}
               </div>
-              
+
               <h2
                 style={{
                   fontSize: "1.5rem",
@@ -274,7 +301,7 @@ export default function LandingPage() {
               >
                 {opt.title}
               </h2>
-              
+
               <p
                 style={{
                   color: "rgba(255, 255, 255, 0.7)",
@@ -285,7 +312,7 @@ export default function LandingPage() {
               >
                 {opt.description}
               </p>
-              
+
               {/* Explore button */}
               <div
                 style={{
@@ -314,7 +341,7 @@ export default function LandingPage() {
           </div>
         ))}
       </div>
-      
+
       {/* Footer tagline */}
       <div
         style={{

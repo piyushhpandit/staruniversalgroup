@@ -1,8 +1,8 @@
 // components/FoundationHeader.jsx
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { theme } from '../theme';
-import logo from '../assets/logo.png';
+import { theme } from '../../utils/theme';
+import logo from '../../assets/logo.png';
 
 const FoundationHeader = () => {
   const navigate = useNavigate();
@@ -19,9 +19,11 @@ const FoundationHeader = () => {
 
   const navItems = [
     { name: 'Home', path: '/' },
-    { name: 'Events', path: '/events' },
     { name: 'Foundation', path: '/foundation', active: true },
-    { name: 'Travel', path: '/travel' },
+    { name: 'Gallery', path: '/foundationgallery' },
+    { name: 'Volunteer', path: '/volunteer' },
+    { name: 'About Us', path: '/foundationaboutus' },
+    { name: 'Donations', path: '/donations' },
     { name: 'Contact', path: '/contact' }
   ];
 
@@ -33,8 +35,8 @@ const FoundationHeader = () => {
         left: 0,
         right: 0,
         zIndex: 1000,
-        background: isScrolled 
-          ? `rgba(10, 10, 10, 0.95)` 
+        background: isScrolled
+          ? `rgba(10, 10, 10, 0.95)`
           : 'transparent',
         backdropFilter: isScrolled ? 'blur(20px)' : 'none',
         borderBottom: isScrolled ? `1px solid ${theme.colors.border.default}` : 'none',
@@ -89,7 +91,7 @@ const FoundationHeader = () => {
             <p
               style={{
                 margin: 0,
-                fontSize: '0.75rem',
+                fontSize: '1rem',
                 color: theme.services.foundation.primary,
                 fontWeight: '500',
                 letterSpacing: '0.5px'

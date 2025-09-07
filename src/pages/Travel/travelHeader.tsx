@@ -1,13 +1,14 @@
 // components/TravelHeader.jsx
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { theme } from '../theme';
-import logo from '../assets/logo.png';
+import { theme } from '../../utils/theme';
+import logo from '../../assets/logo.png';
 
 const TravelHeader = () => {
   const navigate = useNavigate();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [hoveredMenu, setHoveredMenu] = useState(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -18,12 +19,28 @@ const TravelHeader = () => {
   }, []);
 
   const navItems = [
-    { name: 'Home', path: '/' },
-    { name: 'Events', path: '/events' },
-    { name: 'Foundation', path: '/foundation' },
-    { name: 'Travel', path: '/travel', active: true },
+    { name: 'Home', path: '/travel' },
+    { name: 'Buddha Circuit', path: '/buddhacircuit' },
+    { name: 'India Tour', path: '/india' },
+    {
+      name: 'Nepal Tour',
+      path: '/nepal',
+      // subItems: [
+      //   { name: 'Classic Nepal Tour - 4N/5D', path: '/nepal' },
+      //   { name: 'All in one Nepal Tour - 6N/7D', path: '/nepal/all-in-one' },
+      //   { name: 'Discover Nepal Tour - 9N/10D', path: '/nepal/discover' },
+      //   { name: 'Experience Nepal Tour - 7N/8D', path: '/nepal/experience' },
+      //   { name: 'Lumbini & Pokhra Nepal Tour - 6N/7D', path: '/nepal/lumbini-pokhra' },
+      //   { name: 'Pokhra Package - 5N/6D', path: '/nepal/pokhra' },
+      //   { name: 'Pokhra Nagarkot Package - 5N/6D', path: '/nepal/pokhra-nagarkot' },
+      //   { name: 'Pokhra & Gorkha Nepal Trip - 6N/7D', path: '/nepal/pokhra-gorkha' },
+      //   { name: 'Everest Mountain Flight - 1 Hour', path: '/nepal/everest-flight' }
+      // ]
+    },
+    { name: 'Holiday Packages', path: '/holidaypackage' },
     { name: 'Contact', path: '/contact' }
   ];
+
 
   return (
     <header
@@ -33,8 +50,8 @@ const TravelHeader = () => {
         left: 0,
         right: 0,
         zIndex: 1000,
-        background: isScrolled 
-          ? `rgba(10, 10, 10, 0.95)` 
+        background: isScrolled
+          ? `rgba(10, 10, 10, 0.95)`
           : 'transparent',
         backdropFilter: isScrolled ? 'blur(20px)' : 'none',
         borderBottom: isScrolled ? `1px solid ${theme.colors.border.default}` : 'none',
@@ -89,13 +106,13 @@ const TravelHeader = () => {
             <p
               style={{
                 margin: 0,
-                fontSize: '0.75rem',
+                fontSize: '1rem',
                 color: theme.services.travel.primary,
                 fontWeight: '500',
                 letterSpacing: '0.5px'
               }}
             >
-              TRAVEL
+              TOUR & TRAVEL
             </p>
           </div>
         </div>
@@ -112,52 +129,72 @@ const TravelHeader = () => {
           }}
         >
           {navItems.map((item, index) => (
-            <button
+            <div
               key={index}
-              onClick={() => navigate(item.path)}
-              style={{
-                background: 'transparent',
-                border: 'none',
-                color: item.active ? theme.services.travel.primary : theme.colors.text.secondary,
-                fontSize: '0.95rem',
-                fontWeight: item.active ? '600' : '400',
-                cursor: 'pointer',
-                padding: `${theme.spacing.xs} ${theme.spacing.sm}`,
-                borderRadius: theme.borderRadius.sm,
-                transition: theme.transitions.medium,
-                position: 'relative',
-                fontFamily: theme.typography.fontFamily
-              }}
-              onMouseEnter={(e) => {
-                if (!item.active) {
-                  e.target.style.color = theme.colors.text.primary;
-                  e.target.style.background = theme.colors.dark.card;
-                }
-              }}
-              onMouseLeave={(e) => {
-                if (!item.active) {
-                  e.target.style.color = theme.colors.text.secondary;
-                  e.target.style.background = 'transparent';
-                }
-              }}
+              style={{ position: 'relative' }}
+              onMouseEnter={() => setHoveredMenu(item.name)}
+              onMouseLeave={() => setHoveredMenu(null)}
             >
-              {item.name}
-              {item.active && (
+              <button
+                onClick={() => navigate(item.path)}
+                style={{
+                  background: 'transparent',
+                  border: 'none',
+                  color: theme.colors.text.secondary,
+                  fontSize: '0.95rem',
+                  cursor: 'pointer',
+                  padding: `${theme.spacing.xs} ${theme.spacing.sm}`,
+                  borderRadius: theme.borderRadius.sm,
+                  transition: theme.transitions.medium
+                }}
+              >
+                {item.name}
+              </button>
+
+              {/* Dropdown submenu */}
+              {item.subItems && hoveredMenu === item.name && (
                 <div
                   style={{
                     position: 'absolute',
-                    bottom: '-2px',
-                    left: '50%',
-                    transform: 'translateX(-50%)',
-                    width: '20px',
-                    height: '2px',
-                    background: theme.services.travel.gradient,
-                    borderRadius: '1px'
+                    top: '100%',
+                    left: 0,
+                    background: theme.colors.dark.secondary,
+                    border: `1px solid ${theme.colors.border.default}`,
+                    borderRadius: theme.borderRadius.md,
+                    boxShadow: theme.shadows.lg,
+                    padding: theme.spacing.sm,
+                    minWidth: '220px',
+                    zIndex: 1000
                   }}
-                />
+                >
+                  {item.subItems.map((sub, subIdx) => (
+                    <button
+                      key={subIdx}
+                      onClick={() => navigate(sub.path)}
+                      style={{
+                        display: 'block',
+                        width: '100%',
+                        background: 'transparent',
+                        border: 'none',
+                        color: theme.colors.text.secondary,
+                        textAlign: 'left',
+                        padding: `${theme.spacing.xs} ${theme.spacing.sm}`,
+                        borderRadius: theme.borderRadius.sm,
+                        fontSize: '0.9rem',
+                        cursor: 'pointer',
+                        transition: theme.transitions.medium
+                      }}
+                      onMouseEnter={(e) => e.currentTarget.style.color = theme.colors.text.primary}
+                      onMouseLeave={(e) => e.currentTarget.style.color = theme.colors.text.secondary}
+                    >
+                      {sub.name}
+                    </button>
+                  ))}
+                </div>
               )}
-            </button>
+            </div>
           ))}
+
         </div>
 
         {/* CTA Button */}

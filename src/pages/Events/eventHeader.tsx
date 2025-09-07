@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { theme } from '../../utils/theme';
 import logo from '../../assets/logo.png';
+import aboutUs from './aboutUs';
 
 const EventsHeader = () => {
   const navigate = useNavigate();
@@ -18,10 +19,22 @@ const EventsHeader = () => {
   }, []);
 
   const navItems = [
-    { name: 'Home', path: '/' },
-    { name: 'Events', path: '/events', active: true },
-    { name: 'Foundation', path: '/foundation' },
-    { name: 'Travel', path: '/travel' },
+    // { name: 'Home', path: '/' },
+    { name: 'Home', path: '/events', active: true },
+    { name: 'About Us', path: '/aboutus' },
+    { name: 'Services', path: '/services' },
+    // 1. Wedding planning
+    // 2. Brand Promotions
+    // 3. ATL & BTL Activities
+    // 4. Election Campaigns & Promotions 
+    // 5. Van Promotion
+    // 6. Fashion Shows
+
+    { name: 'Images', path: '/eventimages' },
+// 1. Wedding 
+// 2. Corporate
+    { name: 'Clients', path: '/eventclients' },
+    // { name: 'Travel', path: '/travel' },
     { name: 'Contact', path: '/contact' }
   ];
 
@@ -33,8 +46,8 @@ const EventsHeader = () => {
         left: 0,
         right: 0,
         zIndex: 1000,
-        background: isScrolled 
-          ? `rgba(10, 10, 10, 0.95)` 
+        background: isScrolled
+          ? `rgba(10, 10, 10, 0.95)`
           : 'transparent',
         backdropFilter: isScrolled ? 'blur(20px)' : 'none',
         borderBottom: isScrolled ? `1px solid ${theme.colors.border.default}` : 'none',
@@ -68,7 +81,7 @@ const EventsHeader = () => {
             src={logo}
             alt="Star Universal Logo"
             style={{
-              width: '2.5rem',
+              width: '5.5rem',
               height: 'auto',
               marginRight: theme.spacing.sm,
               filter: `drop-shadow(0 0 10px ${theme.services.events.primary}30)`
@@ -78,7 +91,7 @@ const EventsHeader = () => {
             <h2
               style={{
                 margin: 0,
-                fontSize: '1.25rem',
+                fontSize: '1.75rem',
                 fontWeight: '700',
                 color: theme.colors.text.primary,
                 lineHeight: '1.2'
@@ -89,13 +102,13 @@ const EventsHeader = () => {
             <p
               style={{
                 margin: 0,
-                fontSize: '0.75rem',
+                fontSize: '1rem',
                 color: theme.services.events.primary,
                 fontWeight: '500',
                 letterSpacing: '0.5px'
               }}
             >
-              EVENTS
+              EVENT PLANNER
             </p>
           </div>
         </div>

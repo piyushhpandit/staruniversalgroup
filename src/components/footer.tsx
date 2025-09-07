@@ -1,14 +1,14 @@
 // components/Footer.jsx
 import React from 'react';
-import {theme} from "../utils/theme.js";
+import { theme } from "../utils/theme.js";
 import logo from '../assets/logo.png';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
-  
+
   const socialLinks = [
-    { icon: '📧', label: 'Email', href: 'mailto:info@staruniversal.com' },
-    { icon: '📱', label: 'WhatsApp', href: 'https://wa.me/1234567890' },
+    { icon: '📧', label: 'Email', href: 'mailto:teamuniversalevents@gmail.com' },
+    { icon: '📱', label: 'WhatsApp', href: 'https://wa.me/9097963373' },
     { icon: '📍', label: 'Location', href: '#' },
     { icon: '🌐', label: 'Website', href: '#' }
   ];
@@ -29,7 +29,8 @@ const Footer = () => {
         padding: `${theme.spacing.xxl} ${theme.spacing.lg} ${theme.spacing.lg}`,
         fontFamily: theme.typography.fontFamily,
         position: 'relative',
-        overflow: 'hidden'
+        overflow: 'hidden',
+        marginTop: "100px"
       }}
     >
       {/* Background Pattern */}
@@ -48,7 +49,7 @@ const Footer = () => {
           zIndex: 0
         }}
       />
-      
+
       <div
         style={{
           maxWidth: '1200px',
@@ -107,10 +108,10 @@ const Footer = () => {
                 lineHeight: '1.6'
               }}
             >
-              Illuminating possibilities across events, foundation work, and travel experiences. 
+              Illuminating possibilities across events, foundation work, and travel experiences.
               Where vision meets reality.
             </p>
-            
+
             {/* Social Links */}
             <div
               style={{
@@ -154,7 +155,7 @@ const Footer = () => {
               ))}
             </div>
           </div>
-          
+
           {/* Quick Links */}
           <div style={{ textAlign: 'center' }}>
             <h4
@@ -204,68 +205,119 @@ const Footer = () => {
               ))}
             </div>
           </div>
-          
+
+        
+
+        </div>
           {/* Contact Info */}
-          <div style={{ textAlign: 'center' }}>
+          <div style={{ textAlign: "center", padding: theme.spacing.xl }}>
             <h4
               style={{
                 ...theme.typography.heading.h3,
                 color: theme.colors.text.primary,
-                marginBottom: theme.spacing.lg,
-                fontSize: '1.25rem'
+                marginBottom: theme.spacing.xl,
+                fontSize: "1.5rem",
               }}
             >
               Get In Touch
             </h4>
+
             <div
               style={{
-                display: 'flex',
-                flexDirection: 'column',
-                gap: theme.spacing.md,
-                alignItems: 'center'
+                display: "flex",
+                flexDirection: "column",
+                gap: theme.spacing.lg,
+                alignItems: "center",
+                maxWidth: "800px",
+                margin: "0 auto",
               }}
             >
+              {/* Email & Phone */}
               <div
                 style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: theme.spacing.sm,
-                  color: theme.colors.text.secondary,
-                  ...theme.typography.body.medium
-                }}
-              >
-                <span>📧</span>
-                <span>info@staruniversal.com</span>
-              </div>
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: theme.spacing.sm,
-                  color: theme.colors.text.secondary,
-                  ...theme.typography.body.medium
-                }}
-              >
-                <span>📱</span>
-                <span>+91 12345 67890</span>
-              </div>
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
+                  display: "flex",
+                  flexDirection: "column",
                   gap: theme.spacing.sm,
                   color: theme.colors.text.secondary,
                   ...theme.typography.body.medium,
-                  textAlign: 'left'
                 }}
               >
-                <span>📍</span>
-                <span>Ghaziabad, Uttar Pradesh, India</span>
+                <div style={{ display: "flex", alignItems: "center", gap: theme.spacing.sm }}>
+                  <span>📧</span>
+                  <span>teamuniversalevents@gmail.com</span>
+                </div>
+                <div style={{ display: "flex", alignItems: "center", gap: theme.spacing.sm }}>
+                  <span>📱</span>
+                  <span>+91 9097963373</span>
+                </div>
+              </div>
+
+              {/* Offices Section */}
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
+                  gap: theme.spacing.lg,
+                  width: "100%",
+                }}
+              >
+                {/* Event Office */}
+                <div
+                  style={{
+                    background: theme.colors.dark.secondary,
+                    padding: theme.spacing.md,
+                    borderRadius: theme.borderRadius.lg,
+                    textAlign: "left",
+                  }}
+                >
+                  <h5 style={{ ...theme.typography.heading.h4, marginBottom: theme.spacing.sm }}>
+                    📍 Event Office
+                  </h5>
+                  <p style={{ ...theme.typography.body.small, color: theme.colors.text.secondary }}>
+                    Bajarangpuri Colony, Gay Ghat Barrier, Patna, India - 800007
+                  </p>
+                </div>
+
+                {/* Travel Office */}
+                <div
+                  style={{
+                    background: theme.colors.dark.secondary,
+                    padding: theme.spacing.md,
+                    borderRadius: theme.borderRadius.lg,
+                    textAlign: "left",
+                  }}
+                >
+                  <h5 style={{ ...theme.typography.heading.h4, marginBottom: theme.spacing.sm }}>
+                    📍 Travel Office
+                  </h5>
+                  <p style={{ ...theme.typography.body.small, color: theme.colors.text.secondary }}>
+                    Kaudihar Chowk, near Babita Marriage Hall, Raxaul, East Champaran (Nepal Border)
+                  </p>
+                </div>
+
+                {/* Foundation Office */}
+                <div
+                  style={{
+                    background: theme.colors.dark.secondary,
+                    padding: theme.spacing.md,
+                    borderRadius: theme.borderRadius.lg,
+                    textAlign: "left",
+                  }}
+                >
+                  <h5 style={{ ...theme.typography.heading.h4, marginBottom: theme.spacing.sm }}>
+                    📍 Foundation (NGO) Office
+                  </h5>
+                  <p style={{ ...theme.typography.body.small, color: theme.colors.text.secondary }}>
+                    D-68, Aruna Park, 2nd Floor, Opp. Metro Pillar 50, Shakarpur, Laxmi Nagar, Delhi
+                  </p>
+                  <p style={{ ...theme.typography.body.small, color: theme.colors.text.secondary }}>
+                    📧 staruniversalfoundation@gmail.com
+                  </p>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        
+
         {/* Bottom Bar */}
         <div
           style={{
@@ -334,7 +386,7 @@ const Footer = () => {
 };
 
 // Helper function (import from theme.js)
-const createGlowEffect = (color, intensity = '0.3') => 
+const createGlowEffect = (color, intensity = '0.3') =>
   `drop-shadow(0 0 20px ${color}${intensity}) drop-shadow(0 0 40px ${color}20)`;
 
 export default Footer;
