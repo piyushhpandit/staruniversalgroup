@@ -23,7 +23,10 @@ import client20 from "../../assets/client/client20.png";
 import client21 from "../../assets/client/client21.png";
 import client22 from "../../assets/client/client22.jpeg";
 import client23 from "../../assets/client/client23.jpeg";
-
+import client24 from "../../assets/client/client24.png";
+import client25 from "../../assets/client/client25.png";
+import client26 from "../../assets/client/client26.png";
+import client27 from "../../assets/client/client27.png";
 import EventsHeader from "./eventHeader";
 import Footer from "../../components/footer";
 
@@ -52,6 +55,10 @@ const clientLogos = [
   { name: "Twitter", logo: client21, service: "events" },
   { name: "Twitter", logo: client22, service: "events" },
   { name: "Twitter", logo: client23, service: "events" },
+  { name: "Twitter", logo: client24, service: "events" },
+  { name: "Twitter", logo: client25, service: "events" },
+  { name: "Twitter", logo: client26, service: "events" },
+  { name: "Twitter", logo: client27, service: "events" },
 ];
 
 const Clients = () => {
