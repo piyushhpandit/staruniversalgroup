@@ -3,9 +3,11 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { theme } from '../../utils/theme';
 import logo from '../../assets/logo.png';
+import { useIsMobile } from '../../hooks/useMediaQuery';
 
 const TravelHeader = () => {
   const navigate = useNavigate();
+  const isMobile = useIsMobile();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [hoveredMenu, setHoveredMenu] = useState(null);
@@ -22,23 +24,8 @@ const TravelHeader = () => {
     { name: 'Home', path: '/travel' },
     { name: 'Buddha Circuit', path: '/buddhacircuit' },
     { name: 'India Tour', path: '/india' },
-    {
-      name: 'Nepal Tour',
-      path: '/nepal',
-      // subItems: [
-      //   { name: 'Classic Nepal Tour - 4N/5D', path: '/nepal' },
-      //   { name: 'All in one Nepal Tour - 6N/7D', path: '/nepal/all-in-one' },
-      //   { name: 'Discover Nepal Tour - 9N/10D', path: '/nepal/discover' },
-      //   { name: 'Experience Nepal Tour - 7N/8D', path: '/nepal/experience' },
-      //   { name: 'Lumbini & Pokhra Nepal Tour - 6N/7D', path: '/nepal/lumbini-pokhra' },
-      //   { name: 'Pokhra Package - 5N/6D', path: '/nepal/pokhra' },
-      //   { name: 'Pokhra Nagarkot Package - 5N/6D', path: '/nepal/pokhra-nagarkot' },
-      //   { name: 'Pokhra & Gorkha Nepal Trip - 6N/7D', path: '/nepal/pokhra-gorkha' },
-      //   { name: 'Everest Mountain Flight - 1 Hour', path: '/nepal/everest-flight' }
-      // ]
-    },
-    { name: 'Holiday Packages', path: '/holidaypackage' },
-    { name: 'Contact', path: '/contact' }
+    { name: 'Nepal Tour', path: '/nepal' },
+    { name: 'Holiday Packages', path: '/holidaypackage' }
   ];
 
 
@@ -120,12 +107,9 @@ const TravelHeader = () => {
         {/* Desktop Navigation */}
         <div
           style={{
-            display: 'flex',
+            display: isMobile ? 'none' : 'flex',
             alignItems: 'center',
             gap: theme.spacing.lg,
-            '@media (max-width: 768px)': {
-              display: 'none'
-            }
           }}
         >
           {navItems.map((item, index) => (
@@ -198,8 +182,9 @@ const TravelHeader = () => {
         </div>
 
         {/* CTA Button */}
+        {!isMobile && (
         <button
-          onClick={() => navigate('/contact')}
+          onClick={() => navigate('/contact-travel')}
           style={{
             background: theme.services.travel.gradient,
             border: 'none',
@@ -212,9 +197,6 @@ const TravelHeader = () => {
             transition: theme.transitions.medium,
             fontFamily: theme.typography.fontFamily,
             boxShadow: `0 4px 15px ${theme.services.travel.primary}25`,
-            '@media (max-width: 640px)': {
-              display: 'none'
-            }
           }}
           onMouseEnter={(e) => {
             e.target.style.transform = 'translateY(-2px)';
@@ -227,12 +209,13 @@ const TravelHeader = () => {
         >
           Book Now
         </button>
+        )}
 
         {/* Mobile Menu Button */}
+        {isMobile && (
         <button
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           style={{
-            display: 'none',
             background: 'transparent',
             border: `1px solid ${theme.colors.border.default}`,
             color: theme.colors.text.primary,
@@ -240,9 +223,6 @@ const TravelHeader = () => {
             borderRadius: theme.borderRadius.sm,
             cursor: 'pointer',
             transition: theme.transitions.medium,
-            '@media (max-width: 768px)': {
-              display: 'block'
-            }
           }}
         >
           <div
@@ -276,10 +256,11 @@ const TravelHeader = () => {
             }}
           />
         </button>
+        )}
       </nav>
 
       {/* Mobile Menu */}
-      {isMobileMenuOpen && (
+      {isMobile && isMobileMenuOpen && (
         <div
           style={{
             position: 'absolute',
@@ -290,9 +271,6 @@ const TravelHeader = () => {
             backdropFilter: 'blur(20px)',
             borderBottom: `1px solid ${theme.colors.border.default}`,
             padding: theme.spacing.lg,
-            '@media (min-width: 769px)': {
-              display: 'none'
-            }
           }}
         >
           <div
@@ -328,7 +306,7 @@ const TravelHeader = () => {
             ))}
             <button
               onClick={() => {
-                navigate('/contact');
+                navigate('/contact-travel');
                 setIsMobileMenuOpen(false);
               }}
               style={{

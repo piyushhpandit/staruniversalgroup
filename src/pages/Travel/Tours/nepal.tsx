@@ -13,9 +13,11 @@ import nepal8 from '../../../assets/travel/nepal/nepal8.jpg';
 import nepal9 from '../../../assets/travel/nepal/nepal9.jpg';
 import nepal10 from '../../../assets/travel/nepal/nepal10.jpg';
 import TravelHeader from '../travelHeader';
+import { useIsMobile } from '../../../hooks/useMediaQuery';
 
 const Nepal = () => {
     const navigate = useNavigate();
+    const isMobile = useIsMobile();
     const [hovered, setHovered] = useState(null);
 
     const packages = [
@@ -83,7 +85,7 @@ const Nepal = () => {
 
     return (
         <div style={{
-            padding: theme.spacing.xxl,
+            padding: isMobile ? theme.spacing.lg : theme.spacing.xxl,
             fontFamily: theme.typography.fontFamily,
             background: theme.colors.dark.primary,
             color: theme.colors.text.primary,
@@ -92,17 +94,20 @@ const Nepal = () => {
             <TravelHeader />
             <h1 style={{
                 ...theme.typography.heading.h1,
+                fontSize: isMobile ? "2rem" : theme.typography.heading.h1.fontSize,
                 textAlign: "center",
                 marginBottom: theme.spacing.xl,
-                color: theme.services.travel.primary
+                color: theme.services.travel.primary,
+                padding: isMobile ? "0 1rem" : "0",
+                marginTop: isMobile ? "100px" : "0"
             }}>
                 Nepal Tour Packages
             </h1>
 
             <div style={{
                 display: "grid",
-                gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
-                gap: theme.spacing.lg
+                gridTemplateColumns: isMobile ? "1fr" : "repeat(auto-fit, minmax(300px, 1fr))",
+                gap: isMobile ? theme.spacing.md : theme.spacing.lg
             }}>
                 {packages.map((pkg, index) => (
                     <div
@@ -117,6 +122,8 @@ const Nepal = () => {
                         <img
                             src={pkg.image}
                             alt={pkg.title}
+                            loading="lazy"
+                            decoding="async"
                             style={{
                                 width: "100%",
                                 height: "200px",

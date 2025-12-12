@@ -79,10 +79,17 @@ export default defineConfig({
       output: {
         manualChunks: {
           vendor: ['react', 'react-dom'],
+          // Separate image-heavy pages into their own chunks for lazy loading
+          'events-images': ['./src/pages/Events/images'],
+          'foundation-gallery': ['./src/pages/Foundation/gallery'],
         }
       }
-    }
+    },
+    // Optimize chunk size
+    chunkSizeWarningLimit: 1000,
   },
+  // Optimize assets
+  assetsInclude: ['**/*.jpg', '**/*.jpeg', '**/*.png', '**/*.svg', '**/*.webp'],
   // Development server config
   server: {
     port: 3000,

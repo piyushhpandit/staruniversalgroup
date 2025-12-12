@@ -8,8 +8,12 @@ import India from '../../assets/travel/India.jpeg'
 import Nepal from '../../assets/travel/Nepal.jpeg'
 import TravelHeader from './travelHeader';
 import hero2 from '../../assets/nepal-tour.jpg'
+import { useIsMobile } from '../../hooks/useMediaQuery';
+import { useNavigate } from 'react-router';
 
 const Travel = () => {
+  const isMobile = useIsMobile();
+  const navigate = useNavigate();
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [hoveredService, setHoveredService] = useState(null);
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
@@ -216,10 +220,10 @@ const Travel = () => {
   ></div>
 
   {/* Hero Content */}
-  <div style={{ position: "relative", zIndex: 2, padding: "40px" }}>
+  <div style={{ position: "relative", zIndex: 2, padding: isMobile ? "20px" : "40px" }}>
     <h1
       style={{
-        fontSize: "80px",
+        fontSize: isMobile ? "2.5rem" : "80px",
         fontWeight: "800",
         marginBottom: "24px",
         lineHeight: "1.1",
@@ -227,6 +231,7 @@ const Travel = () => {
         WebkitBackgroundClip: "text",
         WebkitTextFillColor: "transparent",
         backgroundClip: "text",
+        padding: isMobile ? "0 1rem" : "0"
       }}
     >
       Travel Beyond
@@ -235,13 +240,14 @@ const Travel = () => {
     </h1>
     <p
       style={{
-        fontSize: "24px",
+        fontSize: isMobile ? "1rem" : "24px",
         marginBottom: "32px",
         maxWidth: "768px",
         margin: "0 auto 32px auto",
         fontWeight: "300",
         lineHeight: "1.6",
         color: theme.colors.text.secondary,
+        padding: isMobile ? "0 1rem" : "0"
       }}
     >
       Premium travel services connecting Bihar, Nepal, and Pan-India. Experience
@@ -252,29 +258,34 @@ const Travel = () => {
     <div
       style={{
         display: "flex",
-        flexDirection: "column",
+        flexDirection: isMobile ? "column" : "row",
         gap: "16px",
         justifyContent: "center",
         alignItems: "center",
+        width: isMobile ? "100%" : "auto",
+        padding: isMobile ? "0 1rem" : "0"
       }}
     >
       <button
         style={{
-          padding: "16px 32px",
+          padding: isMobile ? "14px 24px" : "16px 32px",
           borderRadius: "16px",
           color: "white",
           fontWeight: "600",
-          fontSize: "18px",
+          fontSize: isMobile ? "16px" : "18px",
           border: "none",
           cursor: "pointer",
           transition: "all 0.3s ease",
           background: theme.services.travel.gradient,
           boxShadow: `0 10px 30px ${theme.colors.primary.magenta}30`,
+          width: isMobile ? "100%" : "auto"
+          
         }}
         onMouseEnter={(e) => {
           e.target.style.transform = "scale(1.05)";
           e.target.style.boxShadow = `0 20px 40px ${theme.colors.primary.magenta}40`;
         }}
+        onClick={() => navigate('/contact-travel')}
         onMouseLeave={(e) => {
           e.target.style.transform = "scale(1)";
           e.target.style.boxShadow = `0 10px 30px ${theme.colors.primary.magenta}30`;
@@ -284,15 +295,16 @@ const Travel = () => {
       </button>
       <button
         style={{
-          padding: "16px 32px",
+          padding: isMobile ? "14px 24px" : "16px 32px",
           borderRadius: "16px",
           fontWeight: "600",
-          fontSize: "18px",
+          fontSize: isMobile ? "16px" : "18px",
           cursor: "pointer",
           transition: "all 0.3s ease",
           background: theme.colors.dark.card,
           border: `2px solid ${theme.colors.border.default}`,
           color: theme.colors.text.primary,
+          width: isMobile ? "100%" : "auto"
         }}
         onMouseEnter={(e) => {
           e.target.style.transform = "scale(1.05)";
@@ -308,26 +320,28 @@ const Travel = () => {
 </section>
 
       {/* Services Section */}
-      <section style={{ padding: '80px 24px' }}>
+      <section style={{ padding: isMobile ? '3rem 1rem' : '80px 24px' }}>
         <div style={{ maxWidth: '1280px', margin: '0 auto' }}>
-          <div style={{ textAlign: 'center', marginBottom: '64px' }}>
+          <div style={{ textAlign: 'center', marginBottom: isMobile ? '2rem' : '64px' }}>
             <h2
               style={{
-                fontSize: '64px',
+                fontSize: isMobile ? '2rem' : '64px',
                 fontWeight: 'bold',
                 marginBottom: '24px',
                 color: theme.colors.text.primary,
-                margin: '0 0 24px 0'
+                margin: '0 0 24px 0',
+                padding: isMobile ? '0 1rem' : '0'
               }}
             >
               Complete Travel Solutions
             </h2>
             <p
               style={{
-                fontSize: '20px',
+                fontSize: isMobile ? '1rem' : '20px',
                 maxWidth: '768px',
                 margin: '0 auto',
-                color: theme.colors.text.secondary
+                color: theme.colors.text.secondary,
+                padding: isMobile ? '0 1rem' : '0'
               }}
             >
               From flights to local transport, we provide comprehensive travel services across Bihar, Nepal, and all major Indian destinations.
@@ -369,7 +383,7 @@ const Travel = () => {
                   </div>
                   <h3
                     style={{
-                      fontSize: '32px',
+                      fontSize: isMobile ? '1.5rem' : '32px',
                       fontWeight: 'bold',
                       marginBottom: '16px',
                       textAlign: 'center',
@@ -385,7 +399,8 @@ const Travel = () => {
                       marginBottom: '24px',
                       lineHeight: '1.6',
                       color: theme.colors.text.secondary,
-                      margin: '0 0 24px 0'
+                      margin: '0 0 24px 0',
+                      fontSize: isMobile ? '0.9rem' : '1rem'
                     }}
                   >
                     {service.description}
@@ -423,7 +438,7 @@ const Travel = () => {
       </section>
 
       {/* Stats Section */}
-      <section style={{ padding: '64px 24px' }}>
+      <section style={{ padding: isMobile ? '2rem 1rem' : '64px 24px' }}>
         <div style={{ maxWidth: '1024px', margin: '0 auto' }}>
           <div style={{
             display: 'grid',
@@ -458,7 +473,7 @@ const Travel = () => {
                 </div>
                 <div
                   style={{
-                    fontSize: '48px',
+                    fontSize: isMobile ? '2rem' : '48px',
                     fontWeight: 'bold',
                     marginBottom: '8px',
                     color: theme.colors.text.primary,
@@ -469,7 +484,7 @@ const Travel = () => {
                 </div>
                 <div
                   style={{
-                    fontSize: '14px',
+                    fontSize: isMobile ? '0.85rem' : '14px',
                     color: theme.colors.text.secondary,
                     margin: 0
                   }}
@@ -483,26 +498,28 @@ const Travel = () => {
       </section>
 
       {/* Destinations Section */}
-      <section style={{ padding: '80px 24px' }}>
+      <section style={{ padding: isMobile ? '3rem 1rem' : '80px 24px' }}>
         <div style={{ maxWidth: '1280px', margin: '0 auto' }}>
-          <div style={{ textAlign: 'center', marginBottom: '64px' }}>
+          <div style={{ textAlign: 'center', marginBottom: isMobile ? '2rem' : '64px' }}>
             <h2
               style={{
-                fontSize: '64px',
+                fontSize: isMobile ? '2rem' : '64px',
                 fontWeight: 'bold',
                 marginBottom: '24px',
                 color: theme.colors.text.primary,
-                margin: '0 0 24px 0'
+                margin: '0 0 24px 0',
+                padding: isMobile ? '0 1rem' : '0'
               }}
             >
               Popular Destinations
             </h2>
             <p
               style={{
-                fontSize: '20px',
+                fontSize: isMobile ? '1rem' : '20px',
                 maxWidth: '768px',
                 margin: '0 auto',
-                color: theme.colors.text.secondary
+                color: theme.colors.text.secondary,
+                padding: isMobile ? '0 1rem' : '0'
               }}
             >
               Connect with major cities across Bihar, Nepal, and India with our reliable transport network.
@@ -570,7 +587,7 @@ const Travel = () => {
                   textAlign: 'center'
                 }}>
                   <h3 style={{
-                    fontSize: '28px',
+                    fontSize: isMobile ? '1.25rem' : '28px',
                     fontWeight: 'bold',
                     marginBottom: '16px'
                   }}>
@@ -578,7 +595,7 @@ const Travel = () => {
                   </h3>
                   <div style={{
                     display: 'grid',
-                    gridTemplateColumns: 'repeat(2, 1fr)',
+                    gridTemplateColumns: isMobile ? '1fr' : 'repeat(2, 1fr)',
                     gap: '12px'
                   }}>
                     {route.destinations.map((dest, idx) => (
@@ -615,16 +632,17 @@ const Travel = () => {
       </section>
 
       {/* Testimonials Section */}
-      <section style={{ padding: '80px 24px' }}>
+      <section style={{ padding: isMobile ? '3rem 1rem' : '80px 24px' }}>
         <div style={{ maxWidth: '1024px', margin: '0 auto' }}>
-          <div style={{ textAlign: 'center', marginBottom: '64px' }}>
+          <div style={{ textAlign: 'center', marginBottom: isMobile ? '2rem' : '64px' }}>
             <h2
               style={{
-                fontSize: '64px',
+                fontSize: isMobile ? '2rem' : '64px',
                 fontWeight: 'bold',
                 marginBottom: '24px',
                 color: theme.colors.text.primary,
-                margin: '0 0 24px 0'
+                margin: '0 0 24px 0',
+                padding: isMobile ? '0 1rem' : '0'
               }}
             >
               What Our Customers Say
@@ -633,7 +651,7 @@ const Travel = () => {
 
           <div
             style={{
-              padding: '48px',
+              padding: isMobile ? '1.5rem' : '48px',
               borderRadius: '24px',
               textAlign: 'center',
               position: 'relative',
@@ -659,12 +677,13 @@ const Travel = () => {
             </div>
             <blockquote
               style={{
-                fontSize: '32px',
+                fontSize: isMobile ? '1.1rem' : '32px',
                 marginBottom: '32px',
                 lineHeight: '1.6',
                 color: theme.colors.text.primary,
                 margin: '0 0 32px 0',
-                fontStyle: 'italic'
+                fontStyle: 'italic',
+                padding: isMobile ? '0 0.5rem' : '0'
               }}
             >
               "{testimonials[currentTestimonial].text}"
@@ -672,7 +691,7 @@ const Travel = () => {
             <div>
               <div
                 style={{
-                  fontSize: '18px',
+                  fontSize: isMobile ? '1rem' : '18px',
                   fontWeight: '600',
                   marginBottom: '4px',
                   color: theme.colors.text.primary,
@@ -683,7 +702,7 @@ const Travel = () => {
               </div>
               <div
                 style={{
-                  fontSize: '14px',
+                  fontSize: isMobile ? '0.85rem' : '14px',
                   color: theme.colors.text.tertiary,
                   margin: 0
                 }}
@@ -720,11 +739,11 @@ const Travel = () => {
       </section>
 
       {/* CTA Section */}
-      <section style={{ padding: '80px 24px' }}>
+      <section style={{ padding: isMobile ? '3rem 1rem' : '80px 24px' }}>
         <div style={{ maxWidth: '1024px', margin: '0 auto', textAlign: 'center' }}>
           <div
             style={{
-              padding: '48px',
+              padding: isMobile ? '2rem 1rem' : '48px',
               borderRadius: '24px',
               position: 'relative',
               overflow: 'hidden',
@@ -733,20 +752,22 @@ const Travel = () => {
             }}
           >
             <h2 style={{
-              fontSize: '64px',
+              fontSize: isMobile ? '2rem' : '64px',
               fontWeight: 'bold',
               marginBottom: '24px',
               color: 'white',
-              margin: '0 0 24px 0'
+              margin: '0 0 24px 0',
+              padding: isMobile ? '0 0.5rem' : '0'
             }}>
               Ready to Start Your Journey?
             </h2>
             <p style={{
-              fontSize: '20px',
+              fontSize: isMobile ? '1rem' : '20px',
               marginBottom: '32px',
               color: 'rgba(255, 255, 255, 0.9)',
               maxWidth: '512px',
-              margin: '0 auto 32px auto'
+              margin: '0 auto 32px auto',
+              padding: isMobile ? '0 0.5rem' : '0'
             }}>
               Book your tickets now and experience the difference with Star Universal Travel. Available 24/7 for all your travel needs.
             </p>
@@ -755,18 +776,20 @@ const Travel = () => {
               flexDirection: 'column',
               gap: '24px',
               justifyContent: 'center',
-              alignItems: 'center'
+              alignItems: 'center',
+              width: '100%'
             }}>
               <button style={{
-                padding: '16px 32px',
+                padding: isMobile ? '14px 24px' : '16px 32px',
                 background: 'white',
                 color: 'black',
                 borderRadius: '16px',
                 fontWeight: '600',
-                fontSize: '18px',
+                fontSize: isMobile ? '16px' : '18px',
                 border: 'none',
                 cursor: 'pointer',
-                transition: 'all 0.3s ease'
+                transition: 'all 0.3s ease',
+                width: isMobile ? '100%' : 'auto'
               }}
                 onMouseEnter={(e) => {
                   e.target.style.transform = 'scale(1.05)';

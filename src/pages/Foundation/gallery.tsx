@@ -95,6 +95,8 @@ const Gallery = () => {
                         <motion.img
                             src={src}
                             alt={`Gallery image ${index + 1}`}
+                            loading="lazy"
+                            decoding="async"
                             style={{ 
                                 width: "100%", 
                                 height: "100%", 
@@ -156,6 +158,8 @@ const Gallery = () => {
                     <motion.img
                         src={selectedImage.src}
                         alt={`Gallery image ${selectedImage.index + 1}`}
+                        loading="eager"
+                        decoding="async"
                         initial={{ scale: 0.8, opacity: 0 }}
                         animate={{ scale: 1, opacity: 1 }}
                         transition={{ duration: 0.3 }}

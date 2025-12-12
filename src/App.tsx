@@ -14,6 +14,8 @@ import Donation from './pages/Foundation/donation';
 import FoundationAboutUs from './pages/Foundation/foundationaboutus';
 import Gallery from './pages/Foundation/gallery';
 import ContactEvent from './pages/ContactUs/ContactEvent';
+import ContactFoundation from './pages/ContactUs/ContactFoundation';
+import ContactTravel from './pages/ContactUs/ContactTravel';
 
 
 function App() {
@@ -34,6 +36,8 @@ function App() {
       <Route path="/foundationaboutus" element={<FoundationAboutUs />} />
       <Route path="/foundationgallery" element={<Gallery />} />
       <Route path="/contact-event" element={<ContactEvent />} />
+      <Route path="/contact-foundation" element={<ContactFoundation />} />
+      <Route path="/contact-travel" element={<ContactTravel />} />
     </Routes>
   );
 }

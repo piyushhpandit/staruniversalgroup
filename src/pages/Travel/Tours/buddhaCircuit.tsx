@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { theme, createHoverCard } from "../../../utils/theme";
 import TravelHeader from "../travelHeader";
+import { useIsMobile } from "../../../hooks/useMediaQuery";
 
 // Import images (replace with actual images you have in assets)
 import lumbini from "../../../assets/travel/buddha/lumbini.jpeg";
@@ -13,6 +14,7 @@ import nalanda from "../../../assets/travel/buddha/nalanda.jpeg";
 
 const BuddhaCircuit = () => {
   const navigate = useNavigate();
+  const isMobile = useIsMobile();
   const [hovered, setHovered] = useState(null);
 
   const packages = [
@@ -56,7 +58,7 @@ const BuddhaCircuit = () => {
   return (
     <div
       style={{
-        padding: theme.spacing.xxl,
+        padding: isMobile ? theme.spacing.lg : theme.spacing.xxl,
         fontFamily: theme.typography.fontFamily,
         background: theme.colors.dark.primary,
         color: theme.colors.text.primary,
@@ -67,9 +69,12 @@ const BuddhaCircuit = () => {
       <h1
         style={{
           ...theme.typography.heading.h1,
+          fontSize: isMobile ? "2rem" : theme.typography.heading.h1.fontSize,
           textAlign: "center",
           marginBottom: theme.spacing.xl,
           color: theme.services.travel.primary,
+          padding: isMobile ? "0 1rem" : "0",
+          marginTop: isMobile ? "100px" : "0"
         }}
       >
         🌍 Buddha Circuit Tour Packages
@@ -78,20 +83,22 @@ const BuddhaCircuit = () => {
       <p
         style={{
           ...theme.typography.body.large,
+          fontSize: isMobile ? "1rem" : theme.typography.body.large.fontSize,
           textAlign: "center",
           marginBottom: theme.spacing.xl,
           color: theme.colors.text.secondary,
+          padding: isMobile ? "0 1rem" : "0"
         }}
       >
         A sacred journey covering Lumbini, Bodhgaya, Sarnath, Kushinagar, Rajgir
-        & Nalanda – the most important destinations of Lord Buddha’s life.
+        & Nalanda – the most important destinations of Lord Buddha's life.
       </p>
 
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
-          gap: theme.spacing.lg,
+          gridTemplateColumns: isMobile ? "1fr" : "repeat(auto-fit, minmax(300px, 1fr))",
+          gap: isMobile ? theme.spacing.md : theme.spacing.lg,
         }}
       >
         {packages.map((pkg, index) => (
@@ -107,6 +114,8 @@ const BuddhaCircuit = () => {
             <img
               src={pkg.image}
               alt={pkg.title}
+              loading="lazy"
+              decoding="async"
               style={{
                 width: "100%",
                 height: "200px",

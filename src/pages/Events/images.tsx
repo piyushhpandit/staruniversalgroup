@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { theme } from "../../utils/theme"; // or useTheme() if you added ThemeProvider
+import { useIsMobile } from "../../hooks/useMediaQuery";
 import wedding1 from '../../assets/wedding/wedding1.jpg';
 import wedding2 from '../../assets/wedding/wedding2.jpg';
 import wedding3 from '../../assets/wedding/wedding3.jpg';
@@ -42,6 +43,7 @@ const weddingImages = [wedding1, wedding2, wedding3, wedding4, wedding5, wedding
 const corporateImages = [corporate1, corporate2, corporate3, corporate4, corporate5, corporate6, corporate7, corporate8, corporate9, corporate10, corporate11, corporate12, corporate13, corporate14, corporate15, corporate16, corporate17];
 
 const Images = () => {
+    const isMobile = useIsMobile();
     const [selected, setSelected] = useState("wedding");
 
     const getImages = () => {
@@ -57,12 +59,19 @@ const Images = () => {
                 background: theme.colors.dark.primary,
                 color: theme.colors.text.primary,
                 fontFamily: theme.typography.fontFamily,
-                padding: theme.spacing.lg,
+                padding: isMobile ? theme.spacing.md : theme.spacing.lg,
             }}
         >
             <EventsHeader />
             {/* Buttons */}
-            <div style={{ display: "flex", justifyContent: "center", gap: theme.spacing.md, marginTop: "100px" }}>
+            <div style={{ 
+                display: "flex", 
+                justifyContent: "center", 
+                gap: theme.spacing.md, 
+                marginTop: "100px",
+                flexWrap: "wrap",
+                padding: isMobile ? "0 0.5rem" : "0"
+            }}>
                 {["wedding", "corporate"].map((type) => (
                     <button
                         key={type}
@@ -99,8 +108,8 @@ const Images = () => {
                         style={{
                             marginTop: theme.spacing.lg,
                             display: "grid",
-                            gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
-                            gap: theme.spacing.sm,
+                            gridTemplateColumns: isMobile ? "repeat(2, 1fr)" : "repeat(auto-fit, minmax(250px, 1fr))",
+                            gap: isMobile ? theme.spacing.xs : theme.spacing.sm,
                         }}
                     >
                         {getImages().map((src, index) => (
@@ -116,6 +125,8 @@ const Images = () => {
                                 <motion.img
                                     src={src}
                                     alt=""
+                                    loading="lazy"
+                                    decoding="async"
                                     style={{ width: "100%", height: "100%", objectFit: "cover" }}
                                     initial={{ opacity: 0, scale: 0.9 }}
                                     animate={{ opacity: 1, scale: 1 }}

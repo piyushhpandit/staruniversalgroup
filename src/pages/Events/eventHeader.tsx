@@ -3,10 +3,11 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { theme } from '../../utils/theme';
 import logo from '../../assets/logo.png';
-import aboutUs from './aboutUs';
+import { useIsMobile } from '../../hooks/useMediaQuery';
 
 const EventsHeader = () => {
   const navigate = useNavigate();
+  const isMobile = useIsMobile();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -19,23 +20,11 @@ const EventsHeader = () => {
   }, []);
 
   const navItems = [
-    // { name: 'Home', path: '/' },
     { name: 'Home', path: '/events', active: true },
     { name: 'About Us', path: '/aboutus' },
-    { name: 'Services', path: '/services' },
-    // 1. Wedding planning
-    // 2. Brand Promotions
-    // 3. ATL & BTL Activities
-    // 4. Election Campaigns & Promotions 
-    // 5. Van Promotion
-    // 6. Fashion Shows
-
     { name: 'Images', path: '/eventimages' },
-// 1. Wedding 
-// 2. Corporate
     { name: 'Clients', path: '/eventclients' },
-    // { name: 'Travel', path: '/travel' },
-    { name: 'Contact', path: '/contact' }
+    { name: 'Contact', path: '/contact-event' }
   ];
 
   return (
@@ -116,12 +105,9 @@ const EventsHeader = () => {
         {/* Desktop Navigation */}
         <div
           style={{
-            display: 'flex',
+            display: isMobile ? 'none' : 'flex',
             alignItems: 'center',
             gap: theme.spacing.lg,
-            '@media (max-width: 768px)': {
-              display: 'none'
-            }
           }}
         >
           {navItems.map((item, index) => (
@@ -174,8 +160,9 @@ const EventsHeader = () => {
         </div>
 
         {/* CTA Button */}
+        {!isMobile && (
         <button
-          onClick={() => navigate('/contact')}
+          onClick={() => navigate('/contact-event')}
           style={{
             background: theme.services.events.gradient,
             border: 'none',
@@ -188,9 +175,6 @@ const EventsHeader = () => {
             transition: theme.transitions.medium,
             fontFamily: theme.typography.fontFamily,
             boxShadow: `0 4px 15px ${theme.services.events.primary}25`,
-            '@media (max-width: 640px)': {
-              display: 'none'
-            }
           }}
           onMouseEnter={(e) => {
             e.target.style.transform = 'translateY(-2px)';
@@ -203,12 +187,13 @@ const EventsHeader = () => {
         >
           Get Quote
         </button>
+        )}
 
         {/* Mobile Menu Button */}
+        {isMobile && (
         <button
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           style={{
-            display: 'none',
             background: 'transparent',
             border: `1px solid ${theme.colors.border.default}`,
             color: theme.colors.text.primary,
@@ -216,9 +201,6 @@ const EventsHeader = () => {
             borderRadius: theme.borderRadius.sm,
             cursor: 'pointer',
             transition: theme.transitions.medium,
-            '@media (max-width: 768px)': {
-              display: 'block'
-            }
           }}
         >
           <div
@@ -252,10 +234,11 @@ const EventsHeader = () => {
             }}
           />
         </button>
+        )}
       </nav>
 
       {/* Mobile Menu */}
-      {isMobileMenuOpen && (
+      {isMobile && isMobileMenuOpen && (
         <div
           style={{
             position: 'absolute',
@@ -266,9 +249,6 @@ const EventsHeader = () => {
             backdropFilter: 'blur(20px)',
             borderBottom: `1px solid ${theme.colors.border.default}`,
             padding: theme.spacing.lg,
-            '@media (min-width: 769px)': {
-              display: 'none'
-            }
           }}
         >
           <div
@@ -304,7 +284,7 @@ const EventsHeader = () => {
             ))}
             <button
               onClick={() => {
-                navigate('/contact');
+                navigate('/contact-event');
                 setIsMobileMenuOpen(false);
               }}
               style={{

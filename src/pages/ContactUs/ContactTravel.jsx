@@ -1,17 +1,19 @@
 import React, { useState } from 'react';
 import theme from '../../utils/theme';
-import { sendEventInquiry } from "../../api/contactService";
+import { useIsMobile } from '../../hooks/useMediaQuery';
+import { sendTravelInquiry } from '../../api/contactService';
 
-const ContactEvent = () => {
+const ContactTravel = () => {
+  const isMobile = useIsMobile();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     phone: '',
-    eventType: '',
-    eventDate: '',
-    guestCount: '',
+    tourType: '',
+    destination: '',
+    travelDate: '',
+    travelers: '',
     budget: '',
-    venue: '',
     message: ''
   });
   const [errors, setErrors] = useState({});
@@ -50,23 +52,27 @@ const ContactEvent = () => {
       newErrors.phone = 'Please enter a valid phone number (min 10 digits)';
     }
 
-    if (!formData.eventType) {
-      newErrors.eventType = 'Please select an event type';
+    if (!formData.tourType) {
+      newErrors.tourType = 'Please select a tour type';
     }
 
-    if (!formData.eventDate) {
-      newErrors.eventDate = 'Event date is required';
+    if (!formData.destination.trim()) {
+      newErrors.destination = 'Destination is required';
+    }
+
+    if (!formData.travelDate) {
+      newErrors.travelDate = 'Travel date is required';
     } else {
-      const selectedDate = new Date(formData.eventDate);
+      const selectedDate = new Date(formData.travelDate);
       const today = new Date();
       today.setHours(0, 0, 0, 0);
       if (selectedDate < today) {
-        newErrors.eventDate = 'Event date cannot be in the past';
+        newErrors.travelDate = 'Travel date cannot be in the past';
       }
     }
 
-    if (formData.guestCount && (parseInt(formData.guestCount) < 1 || parseInt(formData.guestCount) > 10000)) {
-      newErrors.guestCount = 'Guest count must be between 1 and 10,000';
+    if (formData.travelers && (parseInt(formData.travelers) < 1 || parseInt(formData.travelers) > 50)) {
+      newErrors.travelers = 'Number of travelers must be between 1 and 50';
     }
 
     setErrors(newErrors);
@@ -91,40 +97,37 @@ const ContactEvent = () => {
     }
 
     setLoading(true);
-    setStatus({ type: "", message: "" });
+    setStatus({ type: '', message: '' });
 
     try {
-      const response = await sendEventInquiry(formData);
+      const response = await sendTravelInquiry(formData);
       if (response.status === 200) {
         setStatus({
-          type: "success",
-          message: "Thank you! We'll contact you soon about your event.",
+          type: 'success',
+          message: 'Thank you! We\'ll contact you soon with travel package details.',
         });
         setFormData({
-          name: "",
-          email: "",
-          phone: "",
-          eventType: "",
-          eventDate: "",
-          guestCount: "",
-          budget: "",
-          venue: "",
-          message: "",
+          name: '',
+          email: '',
+          phone: '',
+          tourType: '',
+          destination: '',
+          travelDate: '',
+          travelers: '',
+          budget: '',
+          message: ''
         });
         setErrors({});
         
-        // Auto-hide success message after 5 seconds
         setTimeout(() => {
-          setStatus({ type: "", message: "" });
+          setStatus({ type: '', message: '' });
         }, 5000);
       }
     } catch (error) {
-      console.error("Error sending event form:", error);
+      console.error('Error sending travel form:', error);
       setStatus({
-        type: "error",
-        message:
-          error.response?.data?.error ||
-          "Something went wrong. Please try again.",
+        type: 'error',
+        message: error.response?.data?.error || 'Something went wrong. Please try again.',
       });
     } finally {
       setLoading(false);
@@ -161,7 +164,7 @@ const ContactEvent = () => {
     <div style={{
       minHeight: '100vh',
       background: `linear-gradient(135deg, ${theme.colors.dark.primary} 0%, ${theme.colors.dark.secondary} 50%, ${theme.colors.dark.tertiary} 100%)`,
-      padding: '2rem 1rem',
+      padding: isMobile ? '2rem 1rem' : '3rem 1rem',
       fontFamily: "'Inter', sans-serif"
     }}>
       <div style={{ 
@@ -172,31 +175,31 @@ const ContactEvent = () => {
         {/* Header Section */}
         <div style={{
           textAlign: 'center',
-          marginBottom: '2.5rem'
+          marginBottom: isMobile ? '2rem' : '3rem'
         }}>
           <div style={{ 
             fontSize: 'clamp(3rem, 8vw, 4rem)', 
             marginBottom: '1rem' 
           }}>
-            {theme.services.events.icon}
+            {theme.services.travel.icon}
           </div>
           <h1 style={{
             fontSize: 'clamp(1.8rem, 5vw, 2.5rem)',
             fontWeight: '700',
-            background: theme.services.events.gradient,
+            background: theme.services.travel.gradient,
             WebkitBackgroundClip: 'text',
             WebkitTextFillColor: 'transparent',
             marginBottom: '0.5rem',
             padding: '0 1rem'
           }}>
-            Plan Your Event
+            Plan Your Journey
           </h1>
           <p style={{ 
             color: theme.colors.text.secondary, 
             fontSize: 'clamp(1rem, 3vw, 1.1rem)',
             padding: '0 1rem'
           }}>
-            Let's create an unforgettable experience together
+            Let's create an unforgettable travel experience for you
           </p>
         </div>
 
@@ -215,7 +218,7 @@ const ContactEvent = () => {
           {/* Row 1: Name & Email */}
           <div style={{ 
             display: 'grid', 
-            gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+            gridTemplateColumns: isMobile ? '1fr' : 'repeat(auto-fit, minmax(250px, 1fr))',
             gap: 'clamp(1rem, 3vw, 1.5rem)', 
             marginBottom: '1.5rem' 
           }}>
@@ -228,7 +231,7 @@ const ContactEvent = () => {
                 onChange={handleChange}
                 placeholder="Enter your full name"
                 style={errors.name ? errorInputStyle : inputStyle}
-                onFocus={(e) => e.target.style.borderColor = theme.services.events.primary}
+                onFocus={(e) => e.target.style.borderColor = theme.services.travel.primary}
                 onBlur={(e) => {
                   if (!errors.name) {
                     e.target.style.borderColor = theme.colors.border.default;
@@ -250,7 +253,7 @@ const ContactEvent = () => {
                 onChange={handleChange}
                 placeholder="your.email@example.com"
                 style={errors.email ? errorInputStyle : inputStyle}
-                onFocus={(e) => e.target.style.borderColor = theme.services.events.primary}
+                onFocus={(e) => e.target.style.borderColor = theme.services.travel.primary}
                 onBlur={(e) => {
                   if (!errors.email) {
                     e.target.style.borderColor = theme.colors.border.default;
@@ -265,10 +268,10 @@ const ContactEvent = () => {
             </div>
           </div>
 
-          {/* Row 2: Phone & Event Type */}
+          {/* Row 2: Phone & Tour Type */}
           <div style={{ 
             display: 'grid', 
-            gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+            gridTemplateColumns: isMobile ? '1fr' : 'repeat(auto-fit, minmax(250px, 1fr))',
             gap: 'clamp(1rem, 3vw, 1.5rem)', 
             marginBottom: '1.5rem' 
           }}>
@@ -281,7 +284,7 @@ const ContactEvent = () => {
                 onChange={handleChange}
                 placeholder="+91 98765 43210"
                 style={errors.phone ? errorInputStyle : inputStyle}
-                onFocus={(e) => e.target.style.borderColor = theme.services.events.primary}
+                onFocus={(e) => e.target.style.borderColor = theme.services.travel.primary}
                 onBlur={(e) => {
                   if (!errors.phone) {
                     e.target.style.borderColor = theme.colors.border.default;
@@ -295,86 +298,115 @@ const ContactEvent = () => {
               )}
             </div>
             <div>
-              <label style={labelStyle}>Event Type *</label>
+              <label style={labelStyle}>Tour Type *</label>
               <select
-                name="eventType"
-                value={formData.eventType}
+                name="tourType"
+                value={formData.tourType}
                 onChange={handleChange}
-                style={errors.eventType ? errorInputStyle : inputStyle}
-                onFocus={(e) => e.target.style.borderColor = theme.services.events.primary}
+                style={errors.tourType ? errorInputStyle : inputStyle}
+                onFocus={(e) => e.target.style.borderColor = theme.services.travel.primary}
                 onBlur={(e) => {
-                  if (!errors.eventType) {
+                  if (!errors.tourType) {
                     e.target.style.borderColor = theme.colors.border.default;
                   }
                 }}
               >
-                <option value="">Select Event Type</option>
-                <option value="Wedding">Wedding</option>
-                <option value="Corporate Event">Corporate Event</option>
-                <option value="Birthday Party">Birthday Party</option>
-                <option value="Conference">Conference</option>
-                <option value="Product Launch">Product Launch</option>
-                <option value="Concert/Music Event">Concert/Music Event</option>
-                <option value="Other">Other</option>
+                <option value="">Select Tour Type</option>
+                <option value="Buddha Circuit">Buddha Circuit</option>
+                <option value="India Tour">India Tour</option>
+                <option value="Nepal Tour">Nepal Tour</option>
+                <option value="Holiday Package">Holiday Package</option>
+                <option value="Custom Tour">Custom Tour</option>
               </select>
-              {errors.eventType && (
+              {errors.tourType && (
                 <span style={{ color: '#ef4444', fontSize: '0.875rem', marginTop: '0.25rem', display: 'block' }}>
-                  {errors.eventType}
+                  {errors.tourType}
                 </span>
               )}
             </div>
           </div>
 
-          {/* Row 3: Date, Guest Count, Budget */}
+          {/* Row 3: Destination & Travel Date */}
           <div style={{ 
             display: 'grid', 
-            gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+            gridTemplateColumns: isMobile ? '1fr' : 'repeat(auto-fit, minmax(250px, 1fr))',
             gap: 'clamp(1rem, 3vw, 1.5rem)', 
             marginBottom: '1.5rem' 
           }}>
             <div>
-              <label style={labelStyle}>Event Date *</label>
+              <label style={labelStyle}>Destination *</label>
               <input
-                type="date"
-                name="eventDate"
-                value={formData.eventDate}
+                type="text"
+                name="destination"
+                value={formData.destination}
                 onChange={handleChange}
-                min={new Date().toISOString().split('T')[0]}
-                style={errors.eventDate ? errorInputStyle : inputStyle}
-                onFocus={(e) => e.target.style.borderColor = theme.services.events.primary}
+                placeholder="e.g., Nepal, India, Bhutan"
+                style={errors.destination ? errorInputStyle : inputStyle}
+                onFocus={(e) => e.target.style.borderColor = theme.services.travel.primary}
                 onBlur={(e) => {
-                  if (!errors.eventDate) {
+                  if (!errors.destination) {
                     e.target.style.borderColor = theme.colors.border.default;
                   }
                 }}
               />
-              {errors.eventDate && (
+              {errors.destination && (
                 <span style={{ color: '#ef4444', fontSize: '0.875rem', marginTop: '0.25rem', display: 'block' }}>
-                  {errors.eventDate}
+                  {errors.destination}
                 </span>
               )}
             </div>
             <div>
-              <label style={labelStyle}>Guest Count</label>
+              <label style={labelStyle}>Travel Date *</label>
               <input
-                type="number"
-                name="guestCount"
-                value={formData.guestCount}
+                type="date"
+                name="travelDate"
+                value={formData.travelDate}
                 onChange={handleChange}
-                placeholder="e.g., 150"
-                min="1"
-                max="10000"
-                style={errors.guestCount ? errorInputStyle : inputStyle}
-                onFocus={(e) => e.target.style.borderColor = theme.services.events.primary}
+                min={new Date().toISOString().split('T')[0]}
+                style={errors.travelDate ? errorInputStyle : inputStyle}
+                onFocus={(e) => e.target.style.borderColor = theme.services.travel.primary}
                 onBlur={(e) => {
-                  if (!errors.guestCount) {
+                  if (!errors.travelDate) {
                     e.target.style.borderColor = theme.colors.border.default;
                   }
                 }}
               />
-              {errors.guestCount && (
+              {errors.travelDate && (
                 <span style={{ color: '#ef4444', fontSize: '0.875rem', marginTop: '0.25rem', display: 'block' }}>
-                  {errors.guestCount}
+                  {errors.travelDate}
+                </span>
+              )}
+            </div>
+          </div>
+
+          {/* Row 4: Travelers & Budget */}
+          <div style={{ 
+            display: 'grid', 
+            gridTemplateColumns: isMobile ? '1fr' : 'repeat(auto-fit, minmax(200px, 1fr))',
+            gap: 'clamp(1rem, 3vw, 1.5rem)', 
+            marginBottom: '1.5rem' 
+          }}>
+            <div>
+              <label style={labelStyle}>Number of Travelers</label>
+              <input
+                type="number"
+                name="travelers"
+                value={formData.travelers}
+                onChange={handleChange}
+                placeholder="e.g., 2"
+                min="1"
+                max="50"
+                style={errors.travelers ? errorInputStyle : inputStyle}
+                onFocus={(e) => e.target.style.borderColor = theme.services.travel.primary}
+                onBlur={(e) => {
+                  if (!errors.travelers) {
+                    e.target.style.borderColor = theme.colors.border.default;
+                  }
+                }}
+              />
+              {errors.travelers && (
+                <span style={{ color: '#ef4444', fontSize: '0.875rem', marginTop: '0.25rem', display: 'block' }}>
+                  {errors.travelers}
                 </span>
               )}
             </div>
@@ -385,45 +417,30 @@ const ContactEvent = () => {
                 name="budget"
                 value={formData.budget}
                 onChange={handleChange}
-                placeholder="e.g., ₹5L-10L"
+                placeholder="e.g., ₹50K-1L"
                 style={inputStyle}
-                onFocus={(e) => e.target.style.borderColor = theme.services.events.primary}
+                onFocus={(e) => e.target.style.borderColor = theme.services.travel.primary}
                 onBlur={(e) => e.target.style.borderColor = theme.colors.border.default}
               />
             </div>
           </div>
 
-          {/* Row 4: Venue */}
-          <div style={{ marginBottom: '1.5rem' }}>
-            <label style={labelStyle}>Venue Preference</label>
-            <input
-              type="text"
-              name="venue"
-              value={formData.venue}
-              onChange={handleChange}
-              placeholder="Indoor, Outdoor, Specific location..."
-              style={inputStyle}
-              onFocus={(e) => e.target.style.borderColor = theme.services.events.primary}
-              onBlur={(e) => e.target.style.borderColor = theme.colors.border.default}
-            />
-          </div>
-
           {/* Row 5: Message */}
           <div style={{ marginBottom: '2rem' }}>
-            <label style={labelStyle}>Additional Details</label>
+            <label style={labelStyle}>Additional Requirements</label>
             <textarea
               name="message"
               value={formData.message}
               onChange={handleChange}
               rows="5"
-              placeholder="Tell us more about your vision... (catering preferences, theme ideas, special requirements, etc.)"
+              placeholder="Tell us about your travel preferences, special requirements, accommodation preferences, etc."
               style={{
                 ...inputStyle,
                 resize: 'vertical',
                 fontFamily: 'inherit',
                 minHeight: '120px'
               }}
-              onFocus={(e) => e.target.style.borderColor = theme.services.events.primary}
+              onFocus={(e) => e.target.style.borderColor = theme.services.travel.primary}
               onBlur={(e) => e.target.style.borderColor = theme.colors.border.default}
             />
           </div>
@@ -458,7 +475,7 @@ const ContactEvent = () => {
               padding: 'clamp(0.875rem, 2vw, 1rem)',
               background: loading 
                 ? theme.colors.dark.secondary 
-                : theme.services.events.gradient,
+                : theme.services.travel.gradient,
               border: 'none',
               borderRadius: '0.75rem',
               color: 'white',
@@ -472,7 +489,7 @@ const ContactEvent = () => {
             onMouseEnter={(e) => {
               if (!loading) {
                 e.target.style.transform = 'translateY(-2px)';
-                e.target.style.boxShadow = '0 10px 25px rgba(142, 68, 173, 0.4)';
+                e.target.style.boxShadow = '0 10px 25px rgba(238, 68, 170, 0.4)';
               }
             }}
             onMouseLeave={(e) => {
@@ -496,7 +513,7 @@ const ContactEvent = () => {
                 Sending...
               </span>
             ) : (
-              '🎉 Submit Event Inquiry'
+              '✈️ Submit Travel Inquiry'
             )}
           </button>
 
@@ -508,7 +525,7 @@ const ContactEvent = () => {
             fontSize: 'clamp(0.8rem, 2vw, 0.9rem)',
             lineHeight: '1.5'
           }}>
-            We'll respond within 24 hours to discuss your event details
+            We'll respond within 24 hours with customized travel package details
           </p>
         </form>
       </div>
@@ -530,17 +547,15 @@ const ContactEvent = () => {
           }
         }
 
-        /* Mobile Responsive Adjustments */
         @media (max-width: 768px) {
           input[type="date"]::-webkit-calendar-picker-indicator {
             background-size: 18px;
           }
         }
 
-        /* Better touch targets for mobile */
         @media (hover: none) {
           input, select, textarea, button {
-            font-size: 16px !important; /* Prevents zoom on iOS */
+            font-size: 16px !important;
           }
         }
       `}</style>
@@ -548,4 +563,5 @@ const ContactEvent = () => {
   );
 };
 
-export default ContactEvent;
+export default ContactTravel;
+

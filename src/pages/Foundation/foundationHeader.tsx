@@ -3,9 +3,11 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { theme } from '../../utils/theme';
 import logo from '../../assets/logo.png';
+import { useIsMobile } from '../../hooks/useMediaQuery';
 
 const FoundationHeader = () => {
   const navigate = useNavigate();
+  const isMobile = useIsMobile();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -20,11 +22,9 @@ const FoundationHeader = () => {
   const navItems = [
     { name: 'Home', path: '/' },
     { name: 'Foundation', path: '/foundation', active: true },
-    { name: 'Gallery', path: '/foundationgallery' },
-    { name: 'Volunteer', path: '/volunteer' },
     { name: 'About Us', path: '/foundationaboutus' },
-    { name: 'Donations', path: '/donations' },
-    { name: 'Contact', path: '/contact' }
+    { name: 'Gallery', path: '/foundationgallery' },
+    { name: 'Donations', path: '/donations' }
   ];
 
   return (
@@ -105,12 +105,9 @@ const FoundationHeader = () => {
         {/* Desktop Navigation */}
         <div
           style={{
-            display: 'flex',
+            display: isMobile ? 'none' : 'flex',
             alignItems: 'center',
             gap: theme.spacing.lg,
-            '@media (max-width: 768px)': {
-              display: 'none'
-            }
           }}
         >
           {navItems.map((item, index) => (
@@ -163,8 +160,9 @@ const FoundationHeader = () => {
         </div>
 
         {/* CTA Button */}
+        {!isMobile && (
         <button
-          onClick={() => navigate('/contact')}
+          onClick={() => navigate('/donations')}
           style={{
             background: theme.services.foundation.gradient,
             border: 'none',
@@ -177,9 +175,6 @@ const FoundationHeader = () => {
             transition: theme.transitions.medium,
             fontFamily: theme.typography.fontFamily,
             boxShadow: `0 4px 15px ${theme.services.foundation.primary}25`,
-            '@media (max-width: 640px)': {
-              display: 'none'
-            }
           }}
           onMouseEnter={(e) => {
             e.target.style.transform = 'translateY(-2px)';
@@ -190,14 +185,15 @@ const FoundationHeader = () => {
             e.target.style.boxShadow = `0 4px 15px ${theme.services.foundation.primary}25`;
           }}
         >
-          Join Us
+          Donate Now
         </button>
+        )}
 
         {/* Mobile Menu Button */}
+        {isMobile && (
         <button
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           style={{
-            display: 'none',
             background: 'transparent',
             border: `1px solid ${theme.colors.border.default}`,
             color: theme.colors.text.primary,
@@ -205,9 +201,6 @@ const FoundationHeader = () => {
             borderRadius: theme.borderRadius.sm,
             cursor: 'pointer',
             transition: theme.transitions.medium,
-            '@media (max-width: 768px)': {
-              display: 'block'
-            }
           }}
         >
           <div
@@ -241,10 +234,11 @@ const FoundationHeader = () => {
             }}
           />
         </button>
+        )}
       </nav>
 
       {/* Mobile Menu */}
-      {isMobileMenuOpen && (
+      {isMobile && isMobileMenuOpen && (
         <div
           style={{
             position: 'absolute',
@@ -255,9 +249,6 @@ const FoundationHeader = () => {
             backdropFilter: 'blur(20px)',
             borderBottom: `1px solid ${theme.colors.border.default}`,
             padding: theme.spacing.lg,
-            '@media (min-width: 769px)': {
-              display: 'none'
-            }
           }}
         >
           <div
@@ -293,7 +284,7 @@ const FoundationHeader = () => {
             ))}
             <button
               onClick={() => {
-                navigate('/contact');
+                navigate('/donations');
                 setIsMobileMenuOpen(false);
               }}
               style={{
@@ -310,7 +301,7 @@ const FoundationHeader = () => {
                 marginTop: theme.spacing.md
               }}
             >
-              Join Us
+              Donate Now
             </button>
           </div>
         </div>

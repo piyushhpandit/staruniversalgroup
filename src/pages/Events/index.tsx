@@ -4,8 +4,10 @@ import { theme, createServiceBackground } from '../../utils/theme';
 import EventsHeader from './eventHeader';
 import Footer from '../../components/footer';
 import hero from '../../assets/wedding hero.jpg'
+import { useIsMobile } from '../../hooks/useMediaQuery';
 
 const Events = () => {
+  const isMobile = useIsMobile();
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [hoveredService, setHoveredService] = useState(null);
   const [activeTestimonial, setActiveTestimonial] = useState(0);
@@ -162,7 +164,7 @@ const Events = () => {
       {/* Hero Section */}
       <section
         style={{
-          padding: `8rem ${theme.spacing.lg} 4rem`,
+          padding: isMobile ? `6rem 1rem 3rem` : `8rem ${theme.spacing.lg} 4rem`,
           textAlign: 'center',
           position: 'relative',
           zIndex: 1,
@@ -196,13 +198,15 @@ const Events = () => {
           <h1
             style={{
               ...theme.typography.heading.hero,
+              fontSize: isMobile ? '2rem' : theme.typography.heading.hero.fontSize,
               background: theme.services.events.gradient,
               backgroundSize: '200% auto',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
               backgroundClip: 'text',
               marginBottom: theme.spacing.lg,
-              animation: 'fadeIn 1.2s ease-out'
+              animation: 'fadeIn 1.2s ease-out',
+              padding: isMobile ? '0 1rem' : '0'
             }}
           >
             Star Universal Events
@@ -210,9 +214,11 @@ const Events = () => {
           <p
             style={{
               ...theme.typography.body.large,
+              fontSize: isMobile ? '1rem' : theme.typography.body.large.fontSize,
               color: theme.colors.text.secondary,
               marginBottom: theme.spacing.xl,
-              animation: 'slideUp 1s ease-out 0.2s both'
+              animation: 'slideUp 1s ease-out 0.2s both',
+              padding: isMobile ? '0 1rem' : '0'
             }}
           >
             Professional event planning for every occasion. From corporate conferences to dream weddings,
@@ -222,10 +228,12 @@ const Events = () => {
           <div
             style={{
               display: 'flex',
+              flexDirection: isMobile ? 'column' : 'row',
               gap: theme.spacing.lg,
               justifyContent: 'center',
               flexWrap: 'wrap',
-              animation: 'slideUp 1s ease-out 0.4s both'
+              animation: 'slideUp 1s ease-out 0.4s both',
+              padding: isMobile ? '0 1rem' : '0'
             }}
           >
             <button
@@ -233,14 +241,15 @@ const Events = () => {
                 background: theme.services.events.gradient,
                 border: 'none',
                 color: theme.colors.text.primary,
-                padding: `${theme.spacing.md} ${theme.spacing.xl}`,
+                padding: isMobile ? `${theme.spacing.sm} ${theme.spacing.lg}` : `${theme.spacing.md} ${theme.spacing.xl}`,
                 borderRadius: theme.borderRadius.md,
-                fontSize: '1.1rem',
+                fontSize: isMobile ? '0.95rem' : '1.1rem',
                 fontWeight: '600',
                 cursor: 'pointer',
                 transition: theme.transitions.medium,
                 fontFamily: theme.typography.fontFamily,
-                boxShadow: `0 8px 25px ${theme.services.events.primary}35`
+                boxShadow: `0 8px 25px ${theme.services.events.primary}35`,
+                width: isMobile ? '100%' : 'auto'
               }}
               onMouseEnter={(e) => {
                 e.target.style.transform = 'translateY(-3px)';
@@ -258,13 +267,14 @@ const Events = () => {
                 background: 'transparent',
                 border: `2px solid ${theme.services.events.primary}`,
                 color: theme.services.events.primary,
-                padding: `${theme.spacing.md} ${theme.spacing.xl}`,
+                padding: isMobile ? `${theme.spacing.sm} ${theme.spacing.lg}` : `${theme.spacing.md} ${theme.spacing.xl}`,
                 borderRadius: theme.borderRadius.md,
-                fontSize: '1.1rem',
+                fontSize: isMobile ? '0.95rem' : '1.1rem',
                 fontWeight: '600',
                 cursor: 'pointer',
                 transition: theme.transitions.medium,
-                fontFamily: theme.typography.fontFamily
+                fontFamily: theme.typography.fontFamily,
+                width: isMobile ? '100%' : 'auto'
               }}
               onMouseEnter={(e) => {
                 e.target.style.background = theme.services.events.primary;
@@ -286,7 +296,7 @@ const Events = () => {
   {/* Stats Section */ }
   < section
 style = {{
-  padding: `${theme.spacing.xl} ${theme.spacing.lg}`,
+  padding: isMobile ? `${theme.spacing.lg} 1rem` : `${theme.spacing.xl} ${theme.spacing.lg}`,
     position: 'relative',
       zIndex: 1
 }}
@@ -296,8 +306,8 @@ style = {{
       maxWidth: '1200px',
       margin: '0 auto',
       display: 'grid',
-      gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-      gap: theme.spacing.lg,
+      gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(auto-fit, minmax(200px, 1fr))',
+      gap: isMobile ? theme.spacing.md : theme.spacing.lg,
       textAlign: 'center'
     }}
   >

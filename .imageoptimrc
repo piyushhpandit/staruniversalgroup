@@ -1,0 +1,18 @@
+# ImageOptim configuration
+# Run: imageoptim --directory src/assets
+
+# JPEG quality (0-100)
+jpegQuality: 80
+
+# PNG optimization level (0-7)
+pngLevel: 7
+
+# Enable WebP conversion
+webp: true
+
+# Max width for resizing (0 = no resize)
+maxWidth: 1920
+
+# Max height for resizing (0 = no resize)
+maxHeight: 1080
+

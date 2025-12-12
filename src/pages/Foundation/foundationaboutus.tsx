@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useIsMobile } from '../../hooks/useMediaQuery';
 
 // Theme configuration
 const theme = {
@@ -41,6 +42,7 @@ const theme = {
 };
 
 const FoundationAboutUs = () => {
+  const isMobile = useIsMobile();
   const [activeSection, setActiveSection] = useState('mission');
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [visibleItems, setVisibleItems] = useState([]);
@@ -139,7 +141,7 @@ const FoundationAboutUs = () => {
       ref={containerRef}
       style={{
         minHeight: '100vh',
-        padding: '80px 16px',
+        padding: isMobile ? '2rem 1rem' : '80px 16px',
         position: 'relative',
         overflow: 'hidden',
         background: `
@@ -185,26 +187,28 @@ const FoundationAboutUs = () => {
         >
           <h1 
             style={{
-              fontSize: '3.5rem',
+              fontSize: isMobile ? '2rem' : '3.5rem',
               fontWeight: 'bold',
               marginBottom: '24px',
               background: theme.services.foundation.gradient,
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
               backgroundClip: 'text',
-              fontFamily: 'Inter, system-ui, sans-serif'
+              fontFamily: 'Inter, system-ui, sans-serif',
+              padding: isMobile ? '0 1rem' : '0'
             }}
           >
             About Our Foundation
           </h1>
           <p 
             style={{
-              fontSize: '1.25rem',
+              fontSize: isMobile ? '1rem' : '1.25rem',
               maxWidth: '896px',
               margin: '0 auto',
               lineHeight: '1.75',
               color: theme.colors.text.secondary,
-              fontFamily: 'Inter, system-ui, sans-serif'
+              fontFamily: 'Inter, system-ui, sans-serif',
+              padding: isMobile ? '0 1rem' : '0'
             }}
           >
             Our NGO is dedicated to bringing positive change in the rural areas of Bihar by focusing on 
@@ -264,23 +268,25 @@ const FoundationAboutUs = () => {
             <div style={{ fontSize: '4rem', marginBottom: '24px' }}>{sections[activeSection].icon}</div>
             <h2 
               style={{
-                fontSize: '2.25rem',
+                fontSize: isMobile ? '1.5rem' : '2.25rem',
                 fontWeight: 'bold',
                 marginBottom: '24px',
                 color: theme.services.foundation.primary,
-                fontFamily: 'Inter, system-ui, sans-serif'
+                fontFamily: 'Inter, system-ui, sans-serif',
+                padding: isMobile ? '0 1rem' : '0'
               }}
             >
               {sections[activeSection].title}
             </h2>
             <p 
               style={{
-                fontSize: '1.25rem',
+                fontSize: isMobile ? '1rem' : '1.25rem',
                 lineHeight: '1.75',
                 maxWidth: '896px',
                 margin: '0 auto',
                 color: theme.colors.text.secondary,
-                fontFamily: 'Inter, system-ui, sans-serif'
+                fontFamily: 'Inter, system-ui, sans-serif',
+                padding: isMobile ? '0 1rem' : '0'
               }}
             >
               {sections[activeSection].content}
@@ -292,15 +298,16 @@ const FoundationAboutUs = () => {
         <div style={{ marginBottom: '80px' }}>
           <h2 
             style={{
-              fontSize: '3rem',
+              fontSize: isMobile ? '2rem' : '3rem',
               fontWeight: 'bold',
               textAlign: 'center',
-              marginBottom: '64px',
+              marginBottom: isMobile ? '2rem' : '64px',
               color: theme.colors.text.primary,
               transform: visibleItems.includes('1') ? 'translateY(0)' : 'translateY(80px)',
               opacity: visibleItems.includes('1') ? 1 : 0,
               transition: 'all 1s ease 0.2s',
-              fontFamily: 'Inter, system-ui, sans-serif'
+              fontFamily: 'Inter, system-ui, sans-serif',
+              padding: isMobile ? '0 1rem' : '0'
             }}
             data-animate
             data-index="1"
@@ -310,11 +317,8 @@ const FoundationAboutUs = () => {
 
           <div style={{ 
             display: 'grid', 
-            gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', 
-            gap: '32px',
-            '@media (max-width: 768px)': {
-              gridTemplateColumns: '1fr'
-            }
+            gridTemplateColumns: isMobile ? '1fr' : 'repeat(auto-fit, minmax(300px, 1fr))', 
+            gap: isMobile ? '1.5rem' : '32px'
           }}>
             {initiatives.map((initiative, index) => (
               <div
@@ -352,7 +356,7 @@ const FoundationAboutUs = () => {
                   </div>
                   <h3 
                     style={{
-                      fontSize: '1.5rem',
+                      fontSize: isMobile ? '1.25rem' : '1.5rem',
                       fontWeight: 'bold',
                       marginBottom: '16px',
                       color: initiative.color,
@@ -364,7 +368,7 @@ const FoundationAboutUs = () => {
                   </h3>
                   <p 
                     style={{
-                      fontSize: '1.125rem',
+                      fontSize: isMobile ? '1rem' : '1.125rem',
                       lineHeight: '1.75',
                       marginBottom: '24px',
                       color: theme.colors.text.secondary,
@@ -415,23 +419,25 @@ const FoundationAboutUs = () => {
           >
             <h3 
               style={{
-                fontSize: '2.25rem',
+                fontSize: isMobile ? '1.5rem' : '2.25rem',
                 fontWeight: 'bold',
                 marginBottom: '24px',
                 color: theme.services.foundation.primary,
-                fontFamily: 'Inter, system-ui, sans-serif'
+                fontFamily: 'Inter, system-ui, sans-serif',
+                padding: isMobile ? '0 1rem' : '0'
               }}
             >
               Join Our Mission
             </h3>
             <p 
               style={{
-                fontSize: '1.25rem',
+                fontSize: isMobile ? '1rem' : '1.25rem',
                 marginBottom: '32px',
                 maxWidth: '512px',
                 margin: '0 auto 32px auto',
                 color: theme.colors.text.secondary,
-                fontFamily: 'Inter, system-ui, sans-serif'
+                fontFamily: 'Inter, system-ui, sans-serif',
+                padding: isMobile ? '0 1rem' : '0'
               }}
             >
               Together, we can create lasting change in Bihar's rural communities. 
@@ -502,12 +508,6 @@ const FoundationAboutUs = () => {
               50% { transform: translateY(-${10 + Math.random() * 20}px) rotate(180deg); }
             }
           `).join('')}
-          
-          @media (max-width: 768px) {
-            h1 { font-size: 2.5rem !important; }
-            h2 { font-size: 2rem !important; }
-            .grid { grid-template-columns: 1fr !important; }
-          }
         `
       }} />
     </div>

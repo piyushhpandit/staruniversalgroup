@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { theme, createHoverCard } from "../../../utils/theme";
 import TravelHeader from "../travelHeader";
+import { useIsMobile } from "../../../hooks/useMediaQuery";
 
 // Import images (replace with actual images in your assets folder)
 import tajmahal from "../../../assets/travel/india/tajmahal.jpeg";
@@ -14,6 +15,7 @@ import ladakh from "../../../assets/travel/india/ladakh.jpeg";
 
 const India = () => {
   const navigate = useNavigate();
+  const isMobile = useIsMobile();
   const [hovered, setHovered] = useState(null);
 
   const packages = [
@@ -64,7 +66,7 @@ const India = () => {
   return (
     <div
       style={{
-        padding: theme.spacing.xxl,
+        padding: isMobile ? theme.spacing.lg : theme.spacing.xxl,
         fontFamily: theme.typography.fontFamily,
         background: theme.colors.dark.primary,
         color: theme.colors.text.primary,
@@ -75,9 +77,12 @@ const India = () => {
       <h1
         style={{
           ...theme.typography.heading.h1,
+          fontSize: isMobile ? "2rem" : theme.typography.heading.h1.fontSize,
           textAlign: "center",
           marginBottom: theme.spacing.xl,
           color: theme.services.travel.primary,
+          padding: isMobile ? "0 1rem" : "0",
+          marginTop: isMobile ? "100px" : "0"
         }}
       >
         Incredible India Tour Packages
@@ -86,21 +91,23 @@ const India = () => {
       <p
         style={{
           ...theme.typography.body.large,
+          fontSize: isMobile ? "1rem" : theme.typography.body.large.fontSize,
           textAlign: "center",
           marginBottom: theme.spacing.xl,
           color: theme.colors.text.secondary,
+          padding: isMobile ? "0 1rem" : "0"
         }}
       >
         From the heritage of Rajasthan to the serenity of Kerala and the
-        spirituality of Varanasi – explore India’s diversity with our curated
+        spirituality of Varanasi – explore India's diversity with our curated
         travel packages.
       </p>
 
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
-          gap: theme.spacing.lg,
+          gridTemplateColumns: isMobile ? "1fr" : "repeat(auto-fit, minmax(300px, 1fr))",
+          gap: isMobile ? theme.spacing.md : theme.spacing.lg,
         }}
       >
         {packages.map((pkg, index) => (
@@ -116,6 +123,8 @@ const India = () => {
             <img
               src={pkg.image}
               alt={pkg.title}
+              loading="lazy"
+              decoding="async"
               style={{
                 width: "100%",
                 height: "200px",

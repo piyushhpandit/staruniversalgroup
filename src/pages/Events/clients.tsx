@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { theme, createHoverCard } from "../../utils/theme";
+import { useIsMobile } from "../../hooks/useMediaQuery";
 import client1 from "../../assets/client/client1.jpg";
 import client2 from "../../assets/client/client2.jpg";
 import client3 from "../../assets/client/client3.jpg";
@@ -62,6 +63,7 @@ const clientLogos = [
 ];
 
 const Clients = () => {
+  const isMobile = useIsMobile();
   const [hoveredIndex, setHoveredIndex] = useState(null);
 
   return (
@@ -69,18 +71,24 @@ const Clients = () => {
       style={{
         background: theme.colors.dark.primary,
         minHeight: "100vh",
-        padding: theme.spacing.xxl,
+        padding: isMobile ? theme.spacing.lg : theme.spacing.xxl,
         color: theme.colors.text.primary,
         fontFamily: theme.typography.fontFamily,
       }}
     >
         <EventsHeader />
       {/* Heading */}
-      <div style={{ textAlign: "center", marginBottom: "100px",  marginTop: "100px" }}>
+      <div style={{ 
+        textAlign: "center", 
+        marginBottom: isMobile ? "2rem" : "100px",  
+        marginTop: isMobile ? "100px" : "100px" 
+      }}>
         <h1
           style={{
             ...theme.typography.heading.h1,
+            fontSize: isMobile ? "2rem" : theme.typography.heading.h1.fontSize,
             color: theme.colors.text.primary,
+            padding: isMobile ? "0 1rem" : "0"
           }}
         >
           Our Clients
@@ -88,8 +96,10 @@ const Clients = () => {
         <p
           style={{
             ...theme.typography.body.medium,
+            fontSize: isMobile ? "0.9rem" : theme.typography.body.medium.fontSize,
             color: theme.colors.text.secondary,
             marginTop: theme.spacing.sm,
+            padding: isMobile ? "0 1rem" : "0"
           }}
         >
           We are proud to collaborate with leading brands worldwide.
@@ -100,8 +110,8 @@ const Clients = () => {
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
-          gap: theme.spacing.lg,
+          gridTemplateColumns: isMobile ? "repeat(2, 1fr)" : "repeat(auto-fit, minmax(200px, 1fr))",
+          gap: isMobile ? theme.spacing.md : theme.spacing.lg,
         }}
       >
         {clientLogos.map((client, index) => (
@@ -113,7 +123,7 @@ const Clients = () => {
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
-              height: "150px",
+              height: isMobile ? "100px" : "150px",
               cursor: "pointer",
               transition: theme.transitions.bouncy,
             }}
@@ -123,9 +133,11 @@ const Clients = () => {
             <img
               src={client.logo}
             //   alt={client.name}
+              loading="lazy"
+              decoding="async"
               style={{
-                maxWidth: "120px",
-                maxHeight: "80px",
+                maxWidth: isMobile ? "90px" : "120px",
+                maxHeight: isMobile ? "60px" : "80px",
                 // filter: "brightness(0) invert(1)", // make logos white-ish for dark bg
                 opacity: hoveredIndex === index ? 1 : 0.7,
                 transition: theme.transitions.medium,

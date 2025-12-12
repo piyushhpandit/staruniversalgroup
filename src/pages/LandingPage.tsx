@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import { useIsMobile } from '../hooks/useMediaQuery';
 import logo from '../assets/SUGLogo.png';
 import logotravel from '../assets/SUGTravel.jpg'
 import logoFoundatiton from '../assets/SUGFoundation.png'
@@ -37,6 +38,7 @@ const options = [
 
 export default function LandingPage() {
   const navigate = useNavigate();
+  const isMobile = useIsMobile();
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [hoveredCard, setHoveredCard] = useState(null);
 
@@ -60,60 +62,12 @@ export default function LandingPage() {
   return (
     <div
       style={{
-        ...backgroundStyle,
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        minHeight: "100vh",
-        padding: "2rem 1rem",
         fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
         color: "#ffffff",
         position: "relative",
         overflow: "hidden",
-        transition: "background 0.3s ease",
       }}
     >
-      {/* Animated background particles */}
-      <div
-        style={{
-          position: "absolute",
-          top: "20%",
-          left: "10%",
-          width: "4px",
-          height: "4px",
-          background: "#ff4444",
-          borderRadius: "50%",
-          animation: "float 6s ease-in-out infinite",
-          boxShadow: "0 0 10px #ff4444",
-        }}
-      />
-      <div
-        style={{
-          position: "absolute",
-          top: "60%",
-          right: "15%",
-          width: "3px",
-          height: "3px",
-          background: "#ffdd00",
-          borderRadius: "50%",
-          animation: "float 8s ease-in-out infinite reverse",
-          boxShadow: "0 0 8px #ffdd00",
-        }}
-      />
-      <div
-        style={{
-          position: "absolute",
-          top: "40%",
-          right: "25%",
-          width: "2px",
-          height: "2px",
-          background: "#ee44aa",
-          borderRadius: "50%",
-          animation: "float 7s ease-in-out infinite",
-          boxShadow: "0 0 6px #ee44aa",
-        }}
-      />
-
       <style>
         {`
           * {
@@ -143,71 +97,144 @@ export default function LandingPage() {
         `}
       </style>
 
-      {/* Logo with glow effect */}
-      <div
+      {/* Hero Section - Same size as About Us */}
+      <section
         style={{
           position: "relative",
-          marginBottom: "3rem",
-          animation: "pulse 4s ease-in-out infinite",
+          minHeight: "100vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          padding: "0 24px",
+          overflow: "hidden",
+          ...backgroundStyle,
+          transition: "background 0.3s ease",
         }}
       >
-        <img
-          src={logo}
-          alt="Star Universal Logo"
+        {/* Animated background particles */}
+        <div
           style={{
-
-            width: "10rem",
-            height: "auto",
-            filter: "drop-shadow(0 0 20px rgba(255, 68, 68, 0.3)) drop-shadow(0 0 40px rgba(255, 221, 0, 0.2)) drop-shadow(0 0 60px rgba(238, 68, 170, 0.1))",
-            transition: "all 0.3s ease",
+            position: "absolute",
+            top: "20%",
+            left: "10%",
+            width: "4px",
+            height: "4px",
+            background: "#ff4444",
+            borderRadius: "50%",
+            animation: "float 6s ease-in-out infinite",
+            boxShadow: "0 0 10px #ff4444",
+            zIndex: 1,
           }}
         />
-      </div>
-
-      {/* Main heading with gradient text */}
-      <div style={{ textAlign: "center", marginBottom: "3rem" }}>
-        <h1
+        <div
           style={{
-            fontSize: "3.5rem",
-            fontWeight: "800",
-            background: "linear-gradient(135deg, #ff4444, #ffdd00, #ee44aa)",
-            backgroundSize: "200% auto",
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-            backgroundClip: "text",
-            marginBottom: "1rem",
-            lineHeight: "1.1",
-            animation: "shimmer 3s linear infinite",
-            textShadow: "0 0 30px rgba(255, 255, 255, 0.1)",
+            position: "absolute",
+            top: "60%",
+            right: "15%",
+            width: "3px",
+            height: "3px",
+            background: "#ffdd00",
+            borderRadius: "50%",
+            animation: "float 8s ease-in-out infinite reverse",
+            boxShadow: "0 0 8px #ffdd00",
+            zIndex: 1,
+          }}
+        />
+        <div
+          style={{
+            position: "absolute",
+            top: "40%",
+            right: "25%",
+            width: "2px",
+            height: "2px",
+            background: "#ee44aa",
+            borderRadius: "50%",
+            animation: "float 7s ease-in-out infinite",
+            boxShadow: "0 0 6px #ee44aa",
+            zIndex: 1,
+          }}
+        />
+
+        {/* Hero Content */}
+        <div
+          style={{
+            position: "relative",
+            zIndex: 20,
+            maxWidth: "1200px",
+            width: "100%",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
           }}
         >
-          STAR UNIVERSAL GROUP
-        </h1>
-        <p
-          style={{
-            fontSize: "1.3rem",
-            color: "rgba(255, 255, 255, 0.7)",
-            fontWeight: "300",
-            maxWidth: "600px",
-            lineHeight: "1.6",
-            letterSpacing: "0.5px",
-          }}
-        >
-          Illuminating possibilities across events, foundation work, and travel experiences
-        </p>
-      </div>
+          {/* Logo with glow effect */}
+          <div
+            style={{
+              position: "relative",
+              marginBottom: isMobile ? "2rem" : "3rem",
+              animation: "pulse 4s ease-in-out infinite",
+            }}
+          >
+            <img
+              src={logo}
+              alt="Star Universal Logo"
+              style={{
+                width: isMobile ? "8rem" : "10rem",
+                height: "auto",
+                filter: "drop-shadow(0 0 20px rgba(255, 68, 68, 0.3)) drop-shadow(0 0 40px rgba(255, 221, 0, 0.2)) drop-shadow(0 0 60px rgba(238, 68, 170, 0.1))",
+                transition: "all 0.3s ease",
+              }}
+            />
+          </div>
 
-      {/* Service cards */}
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
-          gap: "2rem",
-          maxWidth: "1200px",
-          width: "100%",
-          padding: "0 1rem",
-        }}
-      >
+          {/* Main heading with gradient text */}
+          <div style={{ textAlign: "center", marginBottom: isMobile ? "2rem" : "3rem" }}>
+            <h1
+              style={{
+                fontSize: isMobile ? "2rem" : window.innerWidth >= 768 ? "3.5rem" : "2.5rem",
+                fontWeight: "800",
+                background: "linear-gradient(135deg, #ff4444, #ffdd00, #ee44aa)",
+                backgroundSize: "200% auto",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                backgroundClip: "text",
+                marginBottom: "1rem",
+                lineHeight: "1.1",
+                animation: "shimmer 3s linear infinite",
+                textShadow: "0 0 30px rgba(255, 255, 255, 0.1)",
+                padding: isMobile ? "0 1rem" : "0",
+              }}
+            >
+              STAR UNIVERSAL GROUP
+            </h1>
+            <p
+              style={{
+                fontSize: isMobile ? "1rem" : window.innerWidth >= 768 ? "1.3rem" : "1.1rem",
+                color: "rgba(255, 255, 255, 0.7)",
+                fontWeight: "300",
+                maxWidth: "600px",
+                lineHeight: "1.6",
+                letterSpacing: "0.5px",
+                padding: isMobile ? "0 1rem" : "0",
+                margin: "0 auto",
+              }}
+            >
+              Illuminating possibilities across events, foundation work, and travel experiences
+            </p>
+          </div>
+
+          {/* Service cards */}
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: isMobile ? "1fr" : "repeat(auto-fit, minmax(320px, 1fr))",
+              gap: isMobile ? "1.5rem" : "2rem",
+              maxWidth: "1200px",
+              width: "100%",
+              padding: isMobile ? "0 0.5rem" : "0 1rem",
+            }}
+          >
         {options.map((opt, index) => (
           <div
             key={opt.route}
@@ -220,7 +247,7 @@ export default function LandingPage() {
                 ? `2px solid ${opt.color}40`
                 : "1px solid rgba(255, 255, 255, 0.1)",
               borderRadius: "20px",
-              padding: "2.5rem",
+              padding: isMobile ? "1.5rem" : "2.5rem",
               textAlign: "center",
               cursor: "pointer",
               transition: "all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)",
@@ -291,7 +318,7 @@ export default function LandingPage() {
 
               <h2
                 style={{
-                  fontSize: "1.5rem",
+                  fontSize: isMobile ? "1.2rem" : "1.5rem",
                   fontWeight: "700",
                   color: hoveredCard === index ? opt.color : "#ffffff",
                   marginBottom: "1rem",
@@ -305,7 +332,7 @@ export default function LandingPage() {
               <p
                 style={{
                   color: "rgba(255, 255, 255, 0.7)",
-                  fontSize: "1.1rem",
+                  fontSize: isMobile ? "0.95rem" : "1.1rem",
                   lineHeight: "1.6",
                   fontWeight: "300",
                 }}
@@ -340,27 +367,29 @@ export default function LandingPage() {
             </div>
           </div>
         ))}
-      </div>
+          </div>
 
-      {/* Footer tagline */}
-      <div
-        style={{
-          marginTop: "4rem",
-          textAlign: "center",
-          opacity: "0.6",
-        }}
-      >
-        <p
-          style={{
-            fontSize: "0.95rem",
-            color: "rgba(255, 255, 255, 0.5)",
-            fontWeight: "300",
-            letterSpacing: "1px",
-          }}
-        >
-          ✨ WHERE VISION MEETS REALITY ✨
-        </p>
-      </div>
+          {/* Footer tagline */}
+          <div
+            style={{
+              marginTop: isMobile ? "2rem" : "4rem",
+              textAlign: "center",
+              opacity: "0.6",
+            }}
+          >
+            <p
+              style={{
+                fontSize: "0.95rem",
+                color: "rgba(255, 255, 255, 0.5)",
+                fontWeight: "300",
+                letterSpacing: "1px",
+              }}
+            >
+              ✨ WHERE VISION MEETS REALITY ✨
+            </p>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }

@@ -5,6 +5,21 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Star Universal Group</title>
+    <!-- Preload critical images -->
+    <link rel="preload" as="image" href="/src/assets/SUGLogo.png" />
+    <script type="text/javascript">
+      // Single Page Apps for GitHub Pages
+      // This script checks if we're being redirected from 404.html
+      // and if so, redirects to the correct route
+      (function() {
+        var path = window.location.search.match(/[?&]p=([^&]+)/);
+        if (path) {
+          var decodedPath = decodeURIComponent(path[1]);
+          // Remove the query parameter from URL and navigate to the path
+          window.history.replaceState(null, null, decodedPath);
+        }
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>
