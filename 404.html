@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Redirecting...</title>
+    <script type="text/javascript">
+      // Single Page Apps for GitHub Pages
+      // https://github.com/rafgraph/spa-github-pages
+      // This script takes the current url and converts the path and query
+      // string into just a query string, and then redirects the browser to
+      // that new URL with the path and query string as a query string.
+      
+      (function() {
+        var path = window.location.pathname;
+        var search = window.location.search;
+        var hash = window.location.hash;
+        
+        // If there's a hash, preserve it
+        if (hash) {
+          window.location.replace('/index.html' + path + search + hash);
+        } else {
+          // Otherwise, redirect to index.html with the path as a query parameter
+          window.location.replace('/index.html?p=' + encodeURIComponent(path + search));
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <p>Redirecting...</p>
+  </body>
+</html>
+
