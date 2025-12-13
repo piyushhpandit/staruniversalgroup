@@ -231,13 +231,126 @@ app.post('/api/contact/travel', async (req, res) => {
   }
 });
 
+// Root endpoint - Show server status
+app.get('/', (req, res) => {
+  res.send(`
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Star Universal API Server</title>
+      <style>
+        * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+        }
+        body {
+          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          min-height: 100vh;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: white;
+          padding: 20px;
+        }
+        .container {
+          text-align: center;
+          background: rgba(255, 255, 255, 0.1);
+          backdrop-filter: blur(10px);
+          padding: 40px;
+          border-radius: 20px;
+          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+          max-width: 600px;
+          width: 100%;
+        }
+        h1 {
+          font-size: 2.5rem;
+          margin-bottom: 20px;
+          text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        .status {
+          display: inline-block;
+          background: #4ade80;
+          color: white;
+          padding: 10px 20px;
+          border-radius: 50px;
+          font-weight: 600;
+          margin: 20px 0;
+          box-shadow: 0 4px 15px rgba(74, 222, 128, 0.3);
+        }
+        .info {
+          margin-top: 30px;
+          line-height: 1.8;
+          opacity: 0.9;
+        }
+        .endpoints {
+          margin-top: 30px;
+          text-align: left;
+          background: rgba(255, 255, 255, 0.1);
+          padding: 20px;
+          border-radius: 10px;
+        }
+        .endpoints h3 {
+          margin-bottom: 15px;
+          text-align: center;
+        }
+        .endpoint {
+          margin: 10px 0;
+          padding: 10px;
+          background: rgba(255, 255, 255, 0.05);
+          border-radius: 5px;
+          font-family: 'Courier New', monospace;
+        }
+        .emoji {
+          font-size: 3rem;
+          margin-bottom: 20px;
+        }
+      </style>
+    </head>
+    <body>
+      <div class="container">
+        <div class="emoji">🚀</div>
+        <h1>Star Universal API Server</h1>
+        <div class="status">✅ Server is Running</div>
+        <div class="info">
+          <p><strong>Status:</strong> Online and Ready</p>
+          <p><strong>Port:</strong> ${PORT}</p>
+          <p><strong>Environment:</strong> ${process.env.NODE_ENV || 'production'}</p>
+        </div>
+        <div class="endpoints">
+          <h3>Available Endpoints</h3>
+          <div class="endpoint">GET /api/health - Health check</div>
+          <div class="endpoint">POST /api/contact/event - Event contact form</div>
+          <div class="endpoint">POST /api/contact/foundation - Foundation contact form</div>
+          <div class="endpoint">POST /api/contact/travel - Travel contact form</div>
+        </div>
+        <div class="info" style="margin-top: 30px; font-size: 0.9rem; opacity: 0.7;">
+          <p>Server deployed on Render</p>
+          <p>Last updated: ${new Date().toLocaleString()}</p>
+        </div>
+      </div>
+    </body>
+    </html>
+  `);
+});
+
 // Health check endpoint
 app.get('/api/health', (req, res) => {
-  res.json({ status: 'ok', message: 'Server is running' });
+  res.json({ 
+    status: 'ok', 
+    message: 'Server is running',
+    timestamp: new Date().toISOString(),
+    uptime: process.uptime(),
+    environment: process.env.NODE_ENV || 'production'
+  });
 });
 
 app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
   console.log(`📧 Email service ready`);
+  console.log(`🌐 Server URL: http://localhost:${PORT}`);
 });
 
