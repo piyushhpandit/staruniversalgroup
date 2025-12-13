@@ -119,31 +119,20 @@ const ContactEvent = () => {
         }, 5000);
       }
     } catch (error) {
-      console.error("Error sending event form:", error);
+      // Log error details for debugging (only in console, not shown to user)
+      console.error("Error sending event form:", {
+        message: error.message,
+        code: error.code,
+        status: error.response?.status,
+        data: error.response?.data,
+        url: error.config?.url,
+        timestamp: new Date().toISOString()
+      });
       
-      // More specific error messages
-      let errorMessage = 'Something went wrong. Please try again.';
-      
-      if (error.code === 'ECONNABORTED' || error.message?.includes('timeout')) {
-        errorMessage = 'Request timed out. The server might be starting up (Render free tier). Please wait 30-60 seconds and try again.';
-      } else if (error.code === 'ERR_NETWORK' || error.message?.includes('Network Error')) {
-        errorMessage = 'Network error. Please check your internet connection. If using Render free tier, the server might be starting up - please wait and try again.';
-      } else if (error.response) {
-        // Server responded with error status
-        if (error.response.status === 404) {
-          errorMessage = 'Server endpoint not found. Please check server configuration.';
-        } else if (error.response.status === 500) {
-          errorMessage = 'Server error. Please try again in a few moments.';
-        } else {
-          errorMessage = error.response.data?.error || `Server error: ${error.response.status}`;
-        }
-      } else if (error.request) {
-        errorMessage = 'No response from server. The server might be starting up (Render free tier). Please wait 30-60 seconds and try again.';
-      }
-      
+      // User-friendly error message (always the same for security)
       setStatus({
         type: "error",
-        message: errorMessage,
+        message: "Oops! It's not you, it's us. Please try again in sometime.",
       });
     } finally {
       setLoading(false);

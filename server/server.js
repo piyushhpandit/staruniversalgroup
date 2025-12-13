@@ -82,12 +82,14 @@ const formatEmailHTML = (data, type) => {
     <html>
       <head>
         <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <style>
-          body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+          body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; margin: 0; padding: 0; }
           .container { max-width: 600px; margin: 0 auto; padding: 20px; }
           .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 8px 8px 0 0; }
           .content { background: #f9f9f9; padding: 20px; border-radius: 0 0 8px 8px; }
-          table { width: 100%; border-collapse: collapse; }
+          table { width: 100%; border-collapse: collapse; background: white; }
           .footer { margin-top: 20px; padding-top: 20px; border-top: 1px solid #eee; font-size: 12px; color: #999; }
         </style>
       </head>
@@ -112,12 +114,66 @@ const formatEmailHTML = (data, type) => {
   `;
 };
 
+// Helper function to format plain text email
+const formatEmailText = (data, type) => {
+  const typeLabels = {
+    event: 'Event Planning Inquiry',
+    foundation: 'Foundation Inquiry',
+    travel: 'Travel Inquiry'
+  };
+
+  const fields = {
+    event: [
+      { label: 'Name', value: data.name },
+      { label: 'Email', value: data.email },
+      { label: 'Phone', value: data.phone },
+      { label: 'Event Type', value: data.eventType },
+      { label: 'Event Date', value: data.eventDate },
+      { label: 'Guest Count', value: data.guestCount || 'Not specified' },
+      { label: 'Budget', value: data.budget || 'Not specified' },
+      { label: 'Venue Preference', value: data.venue || 'Not specified' },
+      { label: 'Additional Details', value: data.message || 'None' },
+    ],
+    foundation: [
+      { label: 'Name', value: data.name },
+      { label: 'Email', value: data.email },
+      { label: 'Phone', value: data.phone },
+      { label: 'Organization', value: data.organization || 'Not specified' },
+      { label: 'Inquiry Type', value: data.inquiryType },
+      { label: 'Donation Amount', value: data.donationAmount || 'Not specified' },
+      { label: 'Message', value: data.message },
+    ],
+    travel: [
+      { label: 'Name', value: data.name },
+      { label: 'Email', value: data.email },
+      { label: 'Phone', value: data.phone },
+      { label: 'Tour Type', value: data.tourType },
+      { label: 'Destination', value: data.destination },
+      { label: 'Travel Date', value: data.travelDate },
+      { label: 'Number of Travelers', value: data.travelers || 'Not specified' },
+      { label: 'Budget Range', value: data.budget || 'Not specified' },
+      { label: 'Additional Requirements', value: data.message || 'None' },
+    ]
+  };
+
+  const textContent = fields[type].map(field => `${field.label}: ${field.value}`).join('\n');
+
+  return `${typeLabels[type]}\n\nNew inquiry from Star Universal website\n\n${textContent}\n\nSubmitted at: ${new Date().toLocaleString()}\n\nThis email was sent from the Star Universal contact form.`;
+};
+
 // Event contact form endpoint
 app.post('/api/contact/event', async (req, res) => {
-  console.log('📧 Event contact form received:', {
-    timestamp: new Date().toISOString(),
-    body: req.body,
-    headers: req.headers
+  const requestId = `EVENT-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+  const timestamp = new Date().toISOString();
+  
+  console.log(`[${timestamp}] [${requestId}] 📧 Event contact form received:`, {
+    name: req.body.name,
+    email: req.body.email,
+    phone: req.body.phone,
+    eventType: req.body.eventType,
+    eventDate: req.body.eventDate,
+    ip: req.ip || req.connection.remoteAddress,
+    userAgent: req.get('user-agent')
   });
 
   try {
@@ -125,13 +181,21 @@ app.post('/api/contact/event', async (req, res) => {
 
     // Basic validation
     if (!name || !email || !phone || !eventType || !eventDate) {
-      console.log('❌ Validation failed - missing required fields');
+      console.error(`[${timestamp}] [${requestId}] ❌ Validation failed - missing required fields:`, {
+        missing: {
+          name: !name,
+          email: !email,
+          phone: !phone,
+          eventType: !eventType,
+          eventDate: !eventDate
+        }
+      });
       return res.status(400).json({ error: 'Missing required fields' });
     }
 
-    console.log('✅ Validation passed, preparing email...');
+    console.log(`[${timestamp}] [${requestId}] ✅ Validation passed, preparing email...`);
 
-    console.log('📤 Sending email via Resend...');
+    console.log(`[${timestamp}] [${requestId}] 📤 Sending email via Resend...`);
     
     // Send email using Resend (works with cloud deployments like Render)
     const emailResult = await resend.emails.send({
@@ -140,37 +204,91 @@ app.post('/api/contact/event', async (req, res) => {
       replyTo: email,
       subject: `New Event Inquiry from ${name}`,
       html: formatEmailHTML(req.body, 'event'),
+      text: formatEmailText(req.body, 'event'),
+      headers: {
+        'X-Entity-Ref-ID': requestId,
+        'List-Unsubscribe': '<mailto:unsubscribe@staruniversal.com>',
+      },
+      tags: [
+        { name: 'category', value: 'contact-form' },
+        { name: 'type', value: 'event-inquiry' }
+      ]
     });
     
-    console.log('✅ Email sent successfully:', emailResult.data?.id);
+    // Log full response for debugging
+    console.log(`[${timestamp}] [${requestId}] 📧 Resend API Response:`, JSON.stringify(emailResult, null, 2));
+    
+    if (emailResult.error) {
+      throw new Error(`Resend API Error: ${JSON.stringify(emailResult.error)}`);
+    }
+    
+    console.log(`[${timestamp}] [${requestId}] ✅ Email sent successfully:`, {
+      emailId: emailResult.data?.id || emailResult.id || 'N/A',
+      recipient: process.env.RECIPIENT_EMAIL,
+      subject: `New Event Inquiry from ${name}`,
+      from: process.env.FROM_EMAIL || 'Star Universal <onboarding@resend.dev>'
+    });
     
     res.status(200).json({ message: 'Email sent successfully' });
   } catch (error) {
-    console.error('❌ Error sending email:', {
-      error: error.message,
-      code: error.code,
-      command: error.command,
-      response: error.response,
-      stack: error.stack
+    const errorTimestamp = new Date().toISOString();
+    console.error(`[${errorTimestamp}] [${requestId}] ❌ ERROR - Event contact form failed:`, {
+      errorType: error.constructor.name,
+      errorMessage: error.message,
+      errorCode: error.code,
+      stack: error.stack,
+      requestData: {
+        name: req.body.name,
+        email: req.body.email,
+        eventType: req.body.eventType
+      },
+      environment: {
+        hasResendKey: !!process.env.RESEND_API_KEY,
+        hasRecipientEmail: !!process.env.RECIPIENT_EMAIL,
+        nodeEnv: process.env.NODE_ENV
+      }
     });
+    
     res.status(500).json({ 
-      error: 'Failed to send email',
-      details: process.env.NODE_ENV === 'development' ? error.message : undefined
+      error: 'Failed to send email'
     });
   }
 });
 
 // Foundation contact form endpoint
 app.post('/api/contact/foundation', async (req, res) => {
+  const requestId = `FOUNDATION-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+  const timestamp = new Date().toISOString();
+  
+  console.log(`[${timestamp}] [${requestId}] 📧 Foundation contact form received:`, {
+    name: req.body.name,
+    email: req.body.email,
+    phone: req.body.phone,
+    inquiryType: req.body.inquiryType,
+    organization: req.body.organization,
+    ip: req.ip || req.connection.remoteAddress,
+    userAgent: req.get('user-agent')
+  });
+
   try {
     const { name, email, phone, organization, inquiryType, donationAmount, message } = req.body;
 
     // Basic validation
     if (!name || !email || !phone || !inquiryType || !message) {
+      console.error(`[${timestamp}] [${requestId}] ❌ Validation failed - missing required fields:`, {
+        missing: {
+          name: !name,
+          email: !email,
+          phone: !phone,
+          inquiryType: !inquiryType,
+          message: !message
+        }
+      });
       return res.status(400).json({ error: 'Missing required fields' });
     }
 
-    console.log('📤 Sending email via Resend...');
+    console.log(`[${timestamp}] [${requestId}] ✅ Validation passed, preparing email...`);
+    console.log(`[${timestamp}] [${requestId}] 📤 Sending email via Resend...`);
     
     const emailResult = await resend.emails.send({
       from: process.env.FROM_EMAIL || 'Star Universal <onboarding@resend.dev>',
@@ -178,27 +296,91 @@ app.post('/api/contact/foundation', async (req, res) => {
       replyTo: email,
       subject: `New Foundation Inquiry from ${name}`,
       html: formatEmailHTML(req.body, 'foundation'),
+      text: formatEmailText(req.body, 'foundation'),
+      headers: {
+        'X-Entity-Ref-ID': requestId,
+        'List-Unsubscribe': '<mailto:unsubscribe@staruniversal.com>',
+      },
+      tags: [
+        { name: 'category', value: 'contact-form' },
+        { name: 'type', value: 'foundation-inquiry' }
+      ]
     });
     
-    console.log('✅ Email sent successfully:', emailResult.data?.id);
+    // Log full response for debugging
+    console.log(`[${timestamp}] [${requestId}] 📧 Resend API Response:`, JSON.stringify(emailResult, null, 2));
+    
+    if (emailResult.error) {
+      throw new Error(`Resend API Error: ${JSON.stringify(emailResult.error)}`);
+    }
+    
+    console.log(`[${timestamp}] [${requestId}] ✅ Email sent successfully:`, {
+      emailId: emailResult.data?.id || emailResult.id || 'N/A',
+      recipient: process.env.RECIPIENT_EMAIL,
+      subject: `New Foundation Inquiry from ${name}`,
+      from: process.env.FROM_EMAIL || 'Star Universal <onboarding@resend.dev>'
+    });
+    
     res.status(200).json({ message: 'Email sent successfully' });
   } catch (error) {
-    console.error('Error sending email:', error);
+    const errorTimestamp = new Date().toISOString();
+    console.error(`[${errorTimestamp}] [${requestId}] ❌ ERROR - Foundation contact form failed:`, {
+      errorType: error.constructor.name,
+      errorMessage: error.message,
+      errorCode: error.code,
+      stack: error.stack,
+      requestData: {
+        name: req.body.name,
+        email: req.body.email,
+        inquiryType: req.body.inquiryType
+      },
+      environment: {
+        hasResendKey: !!process.env.RESEND_API_KEY,
+        hasRecipientEmail: !!process.env.RECIPIENT_EMAIL,
+        nodeEnv: process.env.NODE_ENV
+      }
+    });
+    
     res.status(500).json({ error: 'Failed to send email' });
   }
 });
 
 // Travel contact form endpoint
 app.post('/api/contact/travel', async (req, res) => {
+  const requestId = `TRAVEL-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+  const timestamp = new Date().toISOString();
+  
+  console.log(`[${timestamp}] [${requestId}] 📧 Travel contact form received:`, {
+    name: req.body.name,
+    email: req.body.email,
+    phone: req.body.phone,
+    tourType: req.body.tourType,
+    destination: req.body.destination,
+    travelDate: req.body.travelDate,
+    ip: req.ip || req.connection.remoteAddress,
+    userAgent: req.get('user-agent')
+  });
+
   try {
     const { name, email, phone, tourType, destination, travelDate, travelers, budget, message } = req.body;
 
     // Basic validation
     if (!name || !email || !phone || !tourType || !destination || !travelDate) {
+      console.error(`[${timestamp}] [${requestId}] ❌ Validation failed - missing required fields:`, {
+        missing: {
+          name: !name,
+          email: !email,
+          phone: !phone,
+          tourType: !tourType,
+          destination: !destination,
+          travelDate: !travelDate
+        }
+      });
       return res.status(400).json({ error: 'Missing required fields' });
     }
 
-    console.log('📤 Sending email via Resend...');
+    console.log(`[${timestamp}] [${requestId}] ✅ Validation passed, preparing email...`);
+    console.log(`[${timestamp}] [${requestId}] 📤 Sending email via Resend...`);
     
     const emailResult = await resend.emails.send({
       from: process.env.FROM_EMAIL || 'Star Universal <onboarding@resend.dev>',
@@ -206,12 +388,52 @@ app.post('/api/contact/travel', async (req, res) => {
       replyTo: email,
       subject: `New Travel Inquiry from ${name}`,
       html: formatEmailHTML(req.body, 'travel'),
+      text: formatEmailText(req.body, 'travel'),
+      headers: {
+        'X-Entity-Ref-ID': requestId,
+        'List-Unsubscribe': '<mailto:unsubscribe@staruniversal.com>',
+      },
+      tags: [
+        { name: 'category', value: 'contact-form' },
+        { name: 'type', value: 'travel-inquiry' }
+      ]
     });
     
-    console.log('✅ Email sent successfully:', emailResult.data?.id);
+    // Log full response for debugging
+    console.log(`[${timestamp}] [${requestId}] 📧 Resend API Response:`, JSON.stringify(emailResult, null, 2));
+    
+    if (emailResult.error) {
+      throw new Error(`Resend API Error: ${JSON.stringify(emailResult.error)}`);
+    }
+    
+    console.log(`[${timestamp}] [${requestId}] ✅ Email sent successfully:`, {
+      emailId: emailResult.data?.id || emailResult.id || 'N/A',
+      recipient: process.env.RECIPIENT_EMAIL,
+      subject: `New Travel Inquiry from ${name}`,
+      from: process.env.FROM_EMAIL || 'Star Universal <onboarding@resend.dev>'
+    });
+    
     res.status(200).json({ message: 'Email sent successfully' });
   } catch (error) {
-    console.error('Error sending email:', error);
+    const errorTimestamp = new Date().toISOString();
+    console.error(`[${errorTimestamp}] [${requestId}] ❌ ERROR - Travel contact form failed:`, {
+      errorType: error.constructor.name,
+      errorMessage: error.message,
+      errorCode: error.code,
+      stack: error.stack,
+      requestData: {
+        name: req.body.name,
+        email: req.body.email,
+        tourType: req.body.tourType,
+        destination: req.body.destination
+      },
+      environment: {
+        hasResendKey: !!process.env.RESEND_API_KEY,
+        hasRecipientEmail: !!process.env.RECIPIENT_EMAIL,
+        nodeEnv: process.env.NODE_ENV
+      }
+    });
+    
     res.status(500).json({ error: 'Failed to send email' });
   }
 });
@@ -313,7 +535,7 @@ app.get('/', (req, res) => {
           <div class="endpoint">POST /api/contact/travel - Travel contact form</div>
         </div>
         <div class="info" style="margin-top: 30px; font-size: 0.9rem; opacity: 0.7;">
-          <p>Server deployed on Render</p>
+          <p>Server deployed</p>
           <p>Last updated: ${new Date().toLocaleString()}</p>
         </div>
       </div>
