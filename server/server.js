@@ -197,33 +197,39 @@ app.post('/api/contact/event', async (req, res) => {
 
     console.log(`[${timestamp}] [${requestId}] 📤 Sending email via Resend...`);
     
+    // Check if RECIPIENT_EMAIL is set
+    if (!process.env.RECIPIENT_EMAIL) {
+      throw new Error('RECIPIENT_EMAIL environment variable is not set');
+    }
+    
     // Send email using Resend (works with cloud deployments like Render)
+    // Note: 'to' must be an array according to Resend API
     const emailResult = await resend.emails.send({
       from: process.env.FROM_EMAIL || 'Star Universal <onboarding@resend.dev>',
-      to: process.env.RECIPIENT_EMAIL,
+      to: [process.env.RECIPIENT_EMAIL], // Must be an array
       replyTo: email,
       subject: `New Event Inquiry from ${name}`,
       html: formatEmailHTML(req.body, 'event'),
       text: formatEmailText(req.body, 'event'),
-      headers: {
-        'X-Entity-Ref-ID': requestId,
-        'List-Unsubscribe': '<mailto:unsubscribe@staruniversal.com>',
-      },
-      tags: [
-        { name: 'category', value: 'contact-form' },
-        { name: 'type', value: 'event-inquiry' }
-      ]
     });
     
     // Log full response for debugging
     console.log(`[${timestamp}] [${requestId}] 📧 Resend API Response:`, JSON.stringify(emailResult, null, 2));
     
+    // Check for errors in response
     if (emailResult.error) {
+      console.error(`[${timestamp}] [${requestId}] ❌ Resend API Error:`, emailResult.error);
       throw new Error(`Resend API Error: ${JSON.stringify(emailResult.error)}`);
     }
     
+    // Resend returns { data: { id: '...' } } on success
+    if (!emailResult.data || !emailResult.data.id) {
+      console.error(`[${timestamp}] [${requestId}] ❌ Unexpected response structure:`, emailResult);
+      throw new Error('Unexpected response from Resend API');
+    }
+    
     console.log(`[${timestamp}] [${requestId}] ✅ Email sent successfully:`, {
-      emailId: emailResult.data?.id || emailResult.id || 'N/A',
+      emailId: emailResult.data.id,
       recipient: process.env.RECIPIENT_EMAIL,
       subject: `New Event Inquiry from ${name}`,
       from: process.env.FROM_EMAIL || 'Star Universal <onboarding@resend.dev>'
@@ -290,32 +296,39 @@ app.post('/api/contact/foundation', async (req, res) => {
     console.log(`[${timestamp}] [${requestId}] ✅ Validation passed, preparing email...`);
     console.log(`[${timestamp}] [${requestId}] 📤 Sending email via Resend...`);
     
+    // Check if RECIPIENT_EMAIL is set
+    if (!process.env.RECIPIENT_EMAIL) {
+      throw new Error('RECIPIENT_EMAIL environment variable is not set');
+    }
+    
+    // Send email using Resend (works with cloud deployments like Render)
+    // Note: 'to' must be an array according to Resend API
     const emailResult = await resend.emails.send({
       from: process.env.FROM_EMAIL || 'Star Universal <onboarding@resend.dev>',
-      to: process.env.RECIPIENT_EMAIL,
+      to: [process.env.RECIPIENT_EMAIL], // Must be an array
       replyTo: email,
       subject: `New Foundation Inquiry from ${name}`,
       html: formatEmailHTML(req.body, 'foundation'),
       text: formatEmailText(req.body, 'foundation'),
-      headers: {
-        'X-Entity-Ref-ID': requestId,
-        'List-Unsubscribe': '<mailto:unsubscribe@staruniversal.com>',
-      },
-      tags: [
-        { name: 'category', value: 'contact-form' },
-        { name: 'type', value: 'foundation-inquiry' }
-      ]
     });
     
     // Log full response for debugging
     console.log(`[${timestamp}] [${requestId}] 📧 Resend API Response:`, JSON.stringify(emailResult, null, 2));
     
+    // Check for errors in response
     if (emailResult.error) {
+      console.error(`[${timestamp}] [${requestId}] ❌ Resend API Error:`, emailResult.error);
       throw new Error(`Resend API Error: ${JSON.stringify(emailResult.error)}`);
     }
     
+    // Resend returns { data: { id: '...' } } on success
+    if (!emailResult.data || !emailResult.data.id) {
+      console.error(`[${timestamp}] [${requestId}] ❌ Unexpected response structure:`, emailResult);
+      throw new Error('Unexpected response from Resend API');
+    }
+    
     console.log(`[${timestamp}] [${requestId}] ✅ Email sent successfully:`, {
-      emailId: emailResult.data?.id || emailResult.id || 'N/A',
+      emailId: emailResult.data.id,
       recipient: process.env.RECIPIENT_EMAIL,
       subject: `New Foundation Inquiry from ${name}`,
       from: process.env.FROM_EMAIL || 'Star Universal <onboarding@resend.dev>'
@@ -382,32 +395,39 @@ app.post('/api/contact/travel', async (req, res) => {
     console.log(`[${timestamp}] [${requestId}] ✅ Validation passed, preparing email...`);
     console.log(`[${timestamp}] [${requestId}] 📤 Sending email via Resend...`);
     
+    // Check if RECIPIENT_EMAIL is set
+    if (!process.env.RECIPIENT_EMAIL) {
+      throw new Error('RECIPIENT_EMAIL environment variable is not set');
+    }
+    
+    // Send email using Resend (works with cloud deployments like Render)
+    // Note: 'to' must be an array according to Resend API
     const emailResult = await resend.emails.send({
       from: process.env.FROM_EMAIL || 'Star Universal <onboarding@resend.dev>',
-      to: process.env.RECIPIENT_EMAIL,
+      to: [process.env.RECIPIENT_EMAIL], // Must be an array
       replyTo: email,
       subject: `New Travel Inquiry from ${name}`,
       html: formatEmailHTML(req.body, 'travel'),
       text: formatEmailText(req.body, 'travel'),
-      headers: {
-        'X-Entity-Ref-ID': requestId,
-        'List-Unsubscribe': '<mailto:unsubscribe@staruniversal.com>',
-      },
-      tags: [
-        { name: 'category', value: 'contact-form' },
-        { name: 'type', value: 'travel-inquiry' }
-      ]
     });
     
     // Log full response for debugging
     console.log(`[${timestamp}] [${requestId}] 📧 Resend API Response:`, JSON.stringify(emailResult, null, 2));
     
+    // Check for errors in response
     if (emailResult.error) {
+      console.error(`[${timestamp}] [${requestId}] ❌ Resend API Error:`, emailResult.error);
       throw new Error(`Resend API Error: ${JSON.stringify(emailResult.error)}`);
     }
     
+    // Resend returns { data: { id: '...' } } on success
+    if (!emailResult.data || !emailResult.data.id) {
+      console.error(`[${timestamp}] [${requestId}] ❌ Unexpected response structure:`, emailResult);
+      throw new Error('Unexpected response from Resend API');
+    }
+    
     console.log(`[${timestamp}] [${requestId}] ✅ Email sent successfully:`, {
-      emailId: emailResult.data?.id || emailResult.id || 'N/A',
+      emailId: emailResult.data.id,
       recipient: process.env.RECIPIENT_EMAIL,
       subject: `New Travel Inquiry from ${name}`,
       from: process.env.FROM_EMAIL || 'Star Universal <onboarding@resend.dev>'
