@@ -1,0 +1,240 @@
+{
+	"info": {
+		"_postman_id": "star-universal-contact-apis",
+		"name": "Star Universal Contact APIs",
+		"description": "Collection for testing all three contact form APIs: Event, Foundation, and Travel",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Health Check",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/health",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"health"
+					]
+				},
+				"description": "Check if the server is running and healthy"
+			},
+			"response": []
+		},
+		{
+			"name": "Event Contact Form",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"John Doe\",\n  \"email\": \"john.doe@example.com\",\n  \"phone\": \"+1234567890\",\n  \"eventType\": \"Wedding\",\n  \"eventDate\": \"2024-12-25\",\n  \"guestCount\": \"100-150\",\n  \"budget\": \"₹5L-10L\",\n  \"venue\": \"Indoor, Garden area preferred\",\n  \"message\": \"Looking for a complete wedding planning service with catering and decoration.\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/contact/event",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"contact",
+						"event"
+					]
+				},
+				"description": "Submit an event planning inquiry.\n\n**Required Fields:**\n- name\n- email\n- phone\n- eventType\n- eventDate\n\n**Optional Fields:**\n- guestCount\n- budget\n- venue\n- message"
+			},
+			"response": []
+		},
+		{
+			"name": "Event Contact - Minimal (Required Only)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"Jane Smith\",\n  \"email\": \"jane.smith@example.com\",\n  \"phone\": \"+9876543210\",\n  \"eventType\": \"Corporate Event\",\n  \"eventDate\": \"2025-01-15\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/contact/event",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"contact",
+						"event"
+					]
+				},
+				"description": "Test with only required fields"
+			},
+			"response": []
+		},
+		{
+			"name": "Foundation Contact Form",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"Sarah Johnson\",\n  \"email\": \"sarah.johnson@example.com\",\n  \"phone\": \"+1122334455\",\n  \"organization\": \"ABC Foundation\",\n  \"inquiryType\": \"Donation\",\n  \"donationAmount\": \"₹50,000\",\n  \"message\": \"We would like to make a donation to support your foundation's initiatives.\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/contact/foundation",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"contact",
+						"foundation"
+					]
+				},
+				"description": "Submit a foundation inquiry.\n\n**Required Fields:**\n- name\n- email\n- phone\n- inquiryType\n- message\n\n**Optional Fields:**\n- organization\n- donationAmount"
+			},
+			"response": []
+		},
+		{
+			"name": "Foundation Contact - Minimal (Required Only)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"Michael Brown\",\n  \"email\": \"michael.brown@example.com\",\n  \"phone\": \"+9988776655\",\n  \"inquiryType\": \"Volunteer\",\n  \"message\": \"I would like to volunteer for your foundation.\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/contact/foundation",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"contact",
+						"foundation"
+					]
+				},
+				"description": "Test with only required fields"
+			},
+			"response": []
+		},
+		{
+			"name": "Travel Contact Form",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"Emily Davis\",\n  \"email\": \"emily.davis@example.com\",\n  \"phone\": \"+5544332211\",\n  \"tourType\": \"Buddhist Circuit\",\n  \"destination\": \"Bodh Gaya, Sarnath, Lumbini\",\n  \"travelDate\": \"2025-03-20\",\n  \"travelers\": \"4\",\n  \"budget\": \"₹2L-3L\",\n  \"message\": \"Interested in a 7-day Buddhist circuit tour with accommodation and meals included.\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/contact/travel",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"contact",
+						"travel"
+					]
+				},
+				"description": "Submit a travel inquiry.\n\n**Required Fields:**\n- name\n- email\n- phone\n- tourType\n- destination\n- travelDate\n\n**Optional Fields:**\n- travelers\n- budget\n- message"
+			},
+			"response": []
+		},
+		{
+			"name": "Travel Contact - Minimal (Required Only)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"Robert Wilson\",\n  \"email\": \"robert.wilson@example.com\",\n  \"phone\": \"+7766554433\",\n  \"tourType\": \"Holiday Package\",\n  \"destination\": \"Nepal\",\n  \"travelDate\": \"2025-04-10\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/contact/travel",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"contact",
+						"travel"
+					]
+				},
+				"description": "Test with only required fields"
+			},
+			"response": []
+		},
+		{
+			"name": "Event Contact - Validation Error Test",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"Test User\",\n  \"email\": \"test@example.com\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/contact/event",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"contact",
+						"event"
+					]
+				},
+				"description": "Test validation - should return 400 error for missing required fields"
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "https://staruniversalgroup-be.onrender.com",
+			"type": "string"
+		}
+	]
+}
+
