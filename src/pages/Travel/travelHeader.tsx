@@ -25,7 +25,8 @@ const TravelHeader = () => {
     { name: 'Buddha Circuit', path: '/buddhacircuit' },
     { name: 'India Tour', path: '/india' },
     { name: 'Nepal Tour', path: '/nepal' },
-    { name: 'Holiday Packages', path: '/holidaypackage' }
+    { name: 'Holiday Packages', path: '/holidaypackage' },
+    { name: 'Contact', path: '/contact-travel' }
   ];
 
 

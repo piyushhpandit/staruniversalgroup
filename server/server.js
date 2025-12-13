@@ -1,7 +1,7 @@
 import express from 'express';
-import nodemailer from 'nodemailer';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import { Resend } from 'resend';
 
 dotenv.config();
 
@@ -12,25 +12,21 @@ const PORT = process.env.PORT || 4000;
 app.use(cors());
 app.use(express.json());
 
-// Create reusable transporter object using SMTP transport
-const transporter = nodemailer.createTransport({
-  host: process.env.SMTP_HOST || 'smtp.gmail.com',
-  port: parseInt(process.env.SMTP_PORT || '587'),
-  secure: false, // true for 465, false for other ports
-  auth: {
-    user: process.env.EMAIL_USER, // Your email
-    pass: process.env.EMAIL_PASSWORD, // Your email password or app password
-  },
+// Request logging middleware
+app.use((req, res, next) => {
+  console.log(`[${new Date().toISOString()}] ${req.method} ${req.path}`);
+  next();
 });
 
-// Verify transporter configuration
-transporter.verify((error, success) => {
-  if (error) {
-    console.error('SMTP configuration error:', error);
-  } else {
-    console.log('✅ Server is ready to send emails');
-  }
-});
+// Initialize Resend (works with cloud deployments like Render)
+const resend = new Resend(process.env.RESEND_API_KEY);
+
+// Verify Resend configuration
+if (process.env.RESEND_API_KEY) {
+  console.log('✅ Resend email service configured');
+} else {
+  console.warn('⚠️ RESEND_API_KEY not set - email sending will fail');
+}
 
 // Helper function to format email HTML
 const formatEmailHTML = (data, type) => {
@@ -118,40 +114,49 @@ const formatEmailHTML = (data, type) => {
 
 // Event contact form endpoint
 app.post('/api/contact/event', async (req, res) => {
+  console.log('📧 Event contact form received:', {
+    timestamp: new Date().toISOString(),
+    body: req.body,
+    headers: req.headers
+  });
+
   try {
     const { name, email, phone, eventType, eventDate, guestCount, budget, venue, message } = req.body;
 
     // Basic validation
     if (!name || !email || !phone || !eventType || !eventDate) {
+      console.log('❌ Validation failed - missing required fields');
       return res.status(400).json({ error: 'Missing required fields' });
     }
 
-    const mailOptions = {
-      from: `"Star Universal Contact" <${process.env.EMAIL_USER}>`,
-      to: process.env.RECIPIENT_EMAIL, // Your email where you want to receive inquiries
+    console.log('✅ Validation passed, preparing email...');
+
+    console.log('📤 Sending email via Resend...');
+    
+    // Send email using Resend (works with cloud deployments like Render)
+    const emailResult = await resend.emails.send({
+      from: process.env.FROM_EMAIL || 'Star Universal <onboarding@resend.dev>',
+      to: process.env.RECIPIENT_EMAIL,
       replyTo: email,
       subject: `New Event Inquiry from ${name}`,
       html: formatEmailHTML(req.body, 'event'),
-      text: `
-        New Event Inquiry
-        
-        Name: ${name}
-        Email: ${email}
-        Phone: ${phone}
-        Event Type: ${eventType}
-        Event Date: ${eventDate}
-        Guest Count: ${guestCount || 'Not specified'}
-        Budget: ${budget || 'Not specified'}
-        Venue: ${venue || 'Not specified'}
-        Message: ${message || 'None'}
-      `
-    };
-
-    await transporter.sendMail(mailOptions);
+    });
+    
+    console.log('✅ Email sent successfully:', emailResult.data?.id);
+    
     res.status(200).json({ message: 'Email sent successfully' });
   } catch (error) {
-    console.error('Error sending email:', error);
-    res.status(500).json({ error: 'Failed to send email' });
+    console.error('❌ Error sending email:', {
+      error: error.message,
+      code: error.code,
+      command: error.command,
+      response: error.response,
+      stack: error.stack
+    });
+    res.status(500).json({ 
+      error: 'Failed to send email',
+      details: process.env.NODE_ENV === 'development' ? error.message : undefined
+    });
   }
 });
 
@@ -165,26 +170,17 @@ app.post('/api/contact/foundation', async (req, res) => {
       return res.status(400).json({ error: 'Missing required fields' });
     }
 
-    const mailOptions = {
-      from: `"Star Universal Contact" <${process.env.EMAIL_USER}>`,
+    console.log('📤 Sending email via Resend...');
+    
+    const emailResult = await resend.emails.send({
+      from: process.env.FROM_EMAIL || 'Star Universal <onboarding@resend.dev>',
       to: process.env.RECIPIENT_EMAIL,
       replyTo: email,
       subject: `New Foundation Inquiry from ${name}`,
       html: formatEmailHTML(req.body, 'foundation'),
-      text: `
-        New Foundation Inquiry
-        
-        Name: ${name}
-        Email: ${email}
-        Phone: ${phone}
-        Organization: ${organization || 'Not specified'}
-        Inquiry Type: ${inquiryType}
-        Donation Amount: ${donationAmount || 'Not specified'}
-        Message: ${message}
-      `
-    };
-
-    await transporter.sendMail(mailOptions);
+    });
+    
+    console.log('✅ Email sent successfully:', emailResult.data?.id);
     res.status(200).json({ message: 'Email sent successfully' });
   } catch (error) {
     console.error('Error sending email:', error);
@@ -202,28 +198,17 @@ app.post('/api/contact/travel', async (req, res) => {
       return res.status(400).json({ error: 'Missing required fields' });
     }
 
-    const mailOptions = {
-      from: `"Star Universal Contact" <${process.env.EMAIL_USER}>`,
+    console.log('📤 Sending email via Resend...');
+    
+    const emailResult = await resend.emails.send({
+      from: process.env.FROM_EMAIL || 'Star Universal <onboarding@resend.dev>',
       to: process.env.RECIPIENT_EMAIL,
       replyTo: email,
       subject: `New Travel Inquiry from ${name}`,
       html: formatEmailHTML(req.body, 'travel'),
-      text: `
-        New Travel Inquiry
-        
-        Name: ${name}
-        Email: ${email}
-        Phone: ${phone}
-        Tour Type: ${tourType}
-        Destination: ${destination}
-        Travel Date: ${travelDate}
-        Travelers: ${travelers || 'Not specified'}
-        Budget: ${budget || 'Not specified'}
-        Message: ${message || 'None'}
-      `
-    };
-
-    await transporter.sendMail(mailOptions);
+    });
+    
+    console.log('✅ Email sent successfully:', emailResult.data?.id);
     res.status(200).json({ message: 'Email sent successfully' });
   } catch (error) {
     console.error('Error sending email:', error);

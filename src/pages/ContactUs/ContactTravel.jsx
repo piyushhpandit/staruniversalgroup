@@ -125,9 +125,25 @@ const ContactTravel = () => {
       }
     } catch (error) {
       console.error('Error sending travel form:', error);
+      
+      // More specific error messages
+      let errorMessage = 'Something went wrong. Please try again.';
+      
+      if (error.code === 'ECONNABORTED' || error.message.includes('timeout')) {
+        errorMessage = 'Request timed out. The server might be starting up. Please try again in a few seconds.';
+      } else if (error.code === 'ERR_NETWORK' || error.message.includes('Network Error')) {
+        errorMessage = 'Network error. Please check your internet connection or the server might be down.';
+      } else if (error.response) {
+        // Server responded with error
+        errorMessage = error.response.data?.error || `Server error: ${error.response.status}`;
+      } else if (error.request) {
+        // Request made but no response
+        errorMessage = 'No response from server. The server might be starting up (Render free tier). Please wait 30-60 seconds and try again.';
+      }
+      
       setStatus({
         type: 'error',
-        message: error.response?.data?.error || 'Something went wrong. Please try again.',
+        message: errorMessage,
       });
     } finally {
       setLoading(false);

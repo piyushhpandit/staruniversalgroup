@@ -24,7 +24,8 @@ const FoundationHeader = () => {
     { name: 'Foundation', path: '/foundation', active: true },
     { name: 'About Us', path: '/foundationaboutus' },
     { name: 'Gallery', path: '/foundationgallery' },
-    { name: 'Donations', path: '/donations' }
+    { name: 'Donations', path: '/donations' },
+    { name: 'Contact', path: '/contact-foundation' }
   ];
 
   return (
@@ -284,7 +285,7 @@ const FoundationHeader = () => {
             ))}
             <button
               onClick={() => {
-                navigate('/donations');
+                navigate('/contact-foundation');
                 setIsMobileMenuOpen(false);
               }}
               style={{
@@ -301,7 +302,7 @@ const FoundationHeader = () => {
                 marginTop: theme.spacing.md
               }}
             >
-              Donate Now
+              Contact Us
             </button>
           </div>
         </div>
