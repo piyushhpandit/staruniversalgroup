@@ -62,3 +62,4 @@ export const isImageCached = (src: string): boolean => {
   return img.complete;
 };
 
+

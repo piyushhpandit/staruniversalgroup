@@ -149,7 +149,7 @@ const Nepal = () => {
                                 {pkg.description}
                             </p>
                             <button
-                                onClick={() => navigate('/contact')}
+                                onClick={() => navigate('/contact-travel')}
                                 style={{
                                     background: theme.services.travel.gradient,
                                     border: "none",

@@ -17,17 +17,6 @@ export const usePWA = (): UsePWAResult => {
   const [isInstallable, setIsInstallable] = useState(false);
 
   useEffect(() => {
-    // Register service worker
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/sw.js')
-        .then((registration) => {
-          console.log('✅ SW registered: ', registration);
-        })
-        .catch((registrationError) => {
-          console.log('❌ SW registration failed: ', registrationError);
-        });
-    }
-
     // Listen for install prompt
     const handleBeforeInstallPrompt = (e: Event) => {
       e.preventDefault();

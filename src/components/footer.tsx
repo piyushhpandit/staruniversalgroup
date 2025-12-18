@@ -15,10 +15,14 @@ const Footer = () => {
 
   const quickLinks = [
     { name: 'Events', href: '/events' },
+    { name: 'Best Wedding Planner in Patna', href: '/events/wedding-planner-patna' },
+    { name: 'Event Company in Bihar', href: '/events/bihar' },
     { name: 'Foundation', href: '/foundation' },
     { name: 'Travel', href: '/travel' },
-    { name: 'About Us', href: '/about' },
-    { name: 'Contact', href: '/contact' }
+    { name: 'Tour Packages for Nepal', href: '/travel/nepal' },
+    { name: 'Tour & Travel Services in India', href: '/travel/india' },
+    { name: 'About Us (Events)', href: '/aboutus' },
+    { name: 'Contact (Events)', href: '/contact-event' }
   ];
 
   return (

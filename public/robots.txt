@@ -1,0 +1,6 @@
+User-agent: *
+Disallow:
+
+Sitemap: https://staruniversalgroup.in/sitemap.xml
+
+

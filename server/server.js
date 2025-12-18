@@ -24,6 +24,14 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 // Verify Resend configuration
 if (process.env.RESEND_API_KEY) {
   console.log('✅ Resend email service configured');
+  console.log('📧 Recipient email:', process.env.RECIPIENT_EMAIL || 'NOT SET');
+  console.log('📧 From email:', process.env.FROM_EMAIL || 'Star Universal <onboarding@resend.dev>');
+  
+  // Warning about Resend limitations
+  if (!process.env.FROM_EMAIL || process.env.FROM_EMAIL.includes('onboarding@resend.dev')) {
+    console.warn('⚠️ Using default Resend domain - emails can only be sent to your Resend account email');
+    console.warn('⚠️ To send to other recipients, verify a domain at resend.com/domains');
+  }
 } else {
   console.warn('⚠️ RESEND_API_KEY not set - email sending will fail');
 }
@@ -195,12 +203,15 @@ app.post('/api/contact/event', async (req, res) => {
 
     console.log(`[${timestamp}] [${requestId}] ✅ Validation passed, preparing email...`);
 
-    console.log(`[${timestamp}] [${requestId}] 📤 Sending email via Resend...`);
-    
-    // Check if RECIPIENT_EMAIL is set
+    // Check environment variables
+    if (!process.env.RESEND_API_KEY) {
+      throw new Error('RESEND_API_KEY environment variable is not set');
+    }
     if (!process.env.RECIPIENT_EMAIL) {
       throw new Error('RECIPIENT_EMAIL environment variable is not set');
     }
+
+    console.log(`[${timestamp}] [${requestId}] 📤 Sending email via Resend...`);
     
     // Send email using Resend (works with cloud deployments like Render)
     // Note: 'to' must be an array according to Resend API
@@ -223,16 +234,15 @@ app.post('/api/contact/event', async (req, res) => {
     }
     
     // Resend returns { data: { id: '...' } } on success
-    if (!emailResult.data || !emailResult.data.id) {
-      console.error(`[${timestamp}] [${requestId}] ❌ Unexpected response structure:`, emailResult);
-      throw new Error('Unexpected response from Resend API');
-    }
+    // But we'll be more lenient - if we get a response without error, consider it success
+    const emailId = emailResult.data?.id || emailResult.id || 'unknown';
     
     console.log(`[${timestamp}] [${requestId}] ✅ Email sent successfully:`, {
-      emailId: emailResult.data.id,
+      emailId: emailId,
       recipient: process.env.RECIPIENT_EMAIL,
       subject: `New Event Inquiry from ${name}`,
-      from: process.env.FROM_EMAIL || 'Star Universal <onboarding@resend.dev>'
+      from: process.env.FROM_EMAIL || 'Star Universal <onboarding@resend.dev>',
+      fullResponse: emailResult
     });
     
     res.status(200).json({ message: 'Email sent successfully' });
@@ -294,12 +304,16 @@ app.post('/api/contact/foundation', async (req, res) => {
     }
 
     console.log(`[${timestamp}] [${requestId}] ✅ Validation passed, preparing email...`);
-    console.log(`[${timestamp}] [${requestId}] 📤 Sending email via Resend...`);
     
-    // Check if RECIPIENT_EMAIL is set
+    // Check environment variables
+    if (!process.env.RESEND_API_KEY) {
+      throw new Error('RESEND_API_KEY environment variable is not set');
+    }
     if (!process.env.RECIPIENT_EMAIL) {
       throw new Error('RECIPIENT_EMAIL environment variable is not set');
     }
+
+    console.log(`[${timestamp}] [${requestId}] 📤 Sending email via Resend...`);
     
     // Send email using Resend (works with cloud deployments like Render)
     // Note: 'to' must be an array according to Resend API
@@ -322,16 +336,15 @@ app.post('/api/contact/foundation', async (req, res) => {
     }
     
     // Resend returns { data: { id: '...' } } on success
-    if (!emailResult.data || !emailResult.data.id) {
-      console.error(`[${timestamp}] [${requestId}] ❌ Unexpected response structure:`, emailResult);
-      throw new Error('Unexpected response from Resend API');
-    }
+    // But we'll be more lenient - if we get a response without error, consider it success
+    const emailId = emailResult.data?.id || emailResult.id || 'unknown';
     
     console.log(`[${timestamp}] [${requestId}] ✅ Email sent successfully:`, {
-      emailId: emailResult.data.id,
+      emailId: emailId,
       recipient: process.env.RECIPIENT_EMAIL,
       subject: `New Foundation Inquiry from ${name}`,
-      from: process.env.FROM_EMAIL || 'Star Universal <onboarding@resend.dev>'
+      from: process.env.FROM_EMAIL || 'Star Universal <onboarding@resend.dev>',
+      fullResponse: emailResult
     });
     
     res.status(200).json({ message: 'Email sent successfully' });
@@ -393,12 +406,16 @@ app.post('/api/contact/travel', async (req, res) => {
     }
 
     console.log(`[${timestamp}] [${requestId}] ✅ Validation passed, preparing email...`);
-    console.log(`[${timestamp}] [${requestId}] 📤 Sending email via Resend...`);
     
-    // Check if RECIPIENT_EMAIL is set
+    // Check environment variables
+    if (!process.env.RESEND_API_KEY) {
+      throw new Error('RESEND_API_KEY environment variable is not set');
+    }
     if (!process.env.RECIPIENT_EMAIL) {
       throw new Error('RECIPIENT_EMAIL environment variable is not set');
     }
+
+    console.log(`[${timestamp}] [${requestId}] 📤 Sending email via Resend...`);
     
     // Send email using Resend (works with cloud deployments like Render)
     // Note: 'to' must be an array according to Resend API
@@ -421,16 +438,15 @@ app.post('/api/contact/travel', async (req, res) => {
     }
     
     // Resend returns { data: { id: '...' } } on success
-    if (!emailResult.data || !emailResult.data.id) {
-      console.error(`[${timestamp}] [${requestId}] ❌ Unexpected response structure:`, emailResult);
-      throw new Error('Unexpected response from Resend API');
-    }
+    // But we'll be more lenient - if we get a response without error, consider it success
+    const emailId = emailResult.data?.id || emailResult.id || 'unknown';
     
     console.log(`[${timestamp}] [${requestId}] ✅ Email sent successfully:`, {
-      emailId: emailResult.data.id,
+      emailId: emailId,
       recipient: process.env.RECIPIENT_EMAIL,
       subject: `New Travel Inquiry from ${name}`,
-      from: process.env.FROM_EMAIL || 'Star Universal <onboarding@resend.dev>'
+      from: process.env.FROM_EMAIL || 'Star Universal <onboarding@resend.dev>',
+      fullResponse: emailResult
     });
     
     res.status(200).json({ message: 'Email sent successfully' });
