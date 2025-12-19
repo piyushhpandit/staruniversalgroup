@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { Heart, Users, Globe, Target, Award, ArrowRight, Play, Quote, Newspaper } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import tree from '../../assets/Foundation/NGOPic1.jpg'
 import drug from '../../assets/Foundation/NGOPic2.jpg'
 import khadi from '../../assets/Foundation/NGOPic3.jpg'
@@ -17,6 +18,7 @@ import FoundationHeader from './foundationHeader';
 import SeoContentBlock from '../../components/SeoContentBlock';
 import { foundationSeoCopy } from '../../content/seoCopy';
 import { foundationFAQs } from '../../content/faqs';
+import ContactFoundation from '../ContactUs/ContactFoundation';
 
 // Theme from the provided theme.js
 const theme = {
@@ -53,9 +55,24 @@ const theme = {
 };
 
 const Foundation = () => {
+  const navigate = useNavigate();
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [activeImpact, setActiveImpact] = useState(0);
   const [hoveredArea, setHoveredArea] = useState(null);
+  const [contactInquiryType, setContactInquiryType] = useState('general');
+  const contactSectionRef = useRef(null);
+
+  const scrollToContact = (nextInquiryType = 'general') => {
+    setContactInquiryType(nextInquiryType);
+
+    // Let state propagate, then scroll+focus.
+    window.setTimeout(() => {
+      if (!contactSectionRef.current) return;
+      contactSectionRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      const firstField = contactSectionRef.current.querySelector('input, select, textarea, button');
+      if (firstField && typeof firstField.focus === 'function') firstField.focus();
+    }, 0);
+  };
 
   useEffect(() => {
     const handleMouseMove = (e) => {
@@ -321,6 +338,7 @@ const Foundation = () => {
         }}
         onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.05)")}
         onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
+        onClick={() => scrollToContact('general')}
       >
         Join Our Mission <ArrowRight size={20} />
       </button>
@@ -348,6 +366,7 @@ const Foundation = () => {
           e.currentTarget.style.borderColor = "rgba(251,191,36,0.4)";
           e.currentTarget.style.backgroundColor = "transparent";
         }}
+        onClick={() => navigate('/foundationgallery')}
       >
         <Play size={20} /> Watch Our Story
       </button>
@@ -778,7 +797,8 @@ const Foundation = () => {
                 fontSize: '16px'
               }}
                 onMouseEnter={(e) => e.target.style.transform = 'scale(1.05)'}
-                onMouseLeave={(e) => e.target.style.transform = 'scale(1)'}>
+                onMouseLeave={(e) => e.target.style.transform = 'scale(1)'}
+                onClick={() => navigate('/donations')}>
                 Donate Now
               </button>
               <button style={{
@@ -798,7 +818,8 @@ const Foundation = () => {
                 onMouseLeave={(e) => {
                   e.target.style.borderColor = 'rgba(251, 191, 36, 0.3)';
                   e.target.style.backgroundColor = 'transparent';
-                }}>
+                }}
+                onClick={() => scrollToContact('volunteer')}>
                 Become a Volunteer
               </button>
               <button style={{
@@ -818,11 +839,26 @@ const Foundation = () => {
                 onMouseLeave={(e) => {
                   e.target.style.borderColor = 'rgba(251, 191, 36, 0.3)';
                   e.target.style.backgroundColor = 'transparent';
-                }}>
+                }}
+                onClick={() => scrollToContact('partnership')}>
                 Partner With Us
               </button>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* Contact Section (embedded) */}
+      <section
+        ref={contactSectionRef}
+        id="foundation-contact"
+        style={{
+          padding: '80px 24px',
+          background: 'rgba(255, 255, 255, 0.02)'
+        }}
+      >
+        <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
+          <ContactFoundation embedded defaultInquiryType={contactInquiryType} />
         </div>
       </section>
 

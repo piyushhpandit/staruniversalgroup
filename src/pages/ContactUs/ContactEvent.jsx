@@ -1,8 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import theme from '../../utils/theme';
 import { sendEventInquiry } from "../../api/contactService";
 
 const ContactEvent = () => {
+  const location = useLocation();
+  const rootRef = useRef(null);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -17,6 +20,15 @@ const ContactEvent = () => {
   const [errors, setErrors] = useState({});
   const [status, setStatus] = useState({ type: '', message: '' });
   const [loading, setLoading] = useState(false);
+
+  // If navigated from CTAs (e.g. Events page "Plan Your Event"), autofocus first input.
+  useEffect(() => {
+    if (!location?.state?.autofocus) return;
+    window.setTimeout(() => {
+      const el = rootRef.current?.querySelector?.('input, select, textarea, button');
+      if (el && typeof el.focus === 'function') el.focus();
+    }, 0);
+  }, [location?.state?.autofocus]);
 
   // Validation functions
   const validateEmail = (email) => {
@@ -166,7 +178,7 @@ const ContactEvent = () => {
   };
 
   return (
-    <div style={{
+    <div ref={rootRef} style={{
       minHeight: '100vh',
       background: `linear-gradient(135deg, ${theme.colors.dark.primary} 0%, ${theme.colors.dark.secondary} 50%, ${theme.colors.dark.tertiary} 100%)`,
       padding: '2rem 1rem',

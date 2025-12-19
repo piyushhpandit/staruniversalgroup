@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import theme from '../../utils/theme';
 import { useIsMobile } from '../../hooks/useMediaQuery';
 import { sendTravelInquiry } from '../../api/contactService';
 
 const ContactTravel = () => {
+  const location = useLocation();
   const isMobile = useIsMobile();
+  const rootRef = useRef(null);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -19,6 +22,15 @@ const ContactTravel = () => {
   const [errors, setErrors] = useState({});
   const [status, setStatus] = useState({ type: '', message: '' });
   const [loading, setLoading] = useState(false);
+
+  // If navigated from CTAs (e.g. Travel page "Book Now"), autofocus first input.
+  useEffect(() => {
+    if (!location?.state?.autofocus) return;
+    window.setTimeout(() => {
+      const el = rootRef.current?.querySelector?.('input, select, textarea, button');
+      if (el && typeof el.focus === 'function') el.focus();
+    }, 0);
+  }, [location?.state?.autofocus]);
 
   // Validation functions
   const validateEmail = (email) => {
@@ -171,7 +183,7 @@ const ContactTravel = () => {
   };
 
   return (
-    <div style={{
+    <div ref={rootRef} style={{
       minHeight: '100vh',
       background: `linear-gradient(135deg, ${theme.colors.dark.primary} 0%, ${theme.colors.dark.secondary} 50%, ${theme.colors.dark.tertiary} 100%)`,
       padding: isMobile ? '2rem 1rem' : '3rem 1rem',

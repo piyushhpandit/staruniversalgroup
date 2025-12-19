@@ -1,12 +1,13 @@
 // components/TravelHeader.jsx
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { theme } from '../../utils/theme';
 import logo from '../../assets/logo.png';
 import { useIsMobile } from '../../hooks/useMediaQuery';
 
 const TravelHeader = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const isMobile = useIsMobile();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -28,6 +29,11 @@ const TravelHeader = () => {
     { name: 'Holiday Packages', path: '/holidaypackage' },
     { name: 'Contact', path: '/contact-travel' }
   ];
+
+  const isActivePath = (path) => {
+    if (path === '/travel') return location.pathname === '/travel' || location.pathname.startsWith('/travel/');
+    return location.pathname === path;
+  };
 
 
   return (
@@ -125,12 +131,19 @@ const TravelHeader = () => {
                 style={{
                   background: 'transparent',
                   border: 'none',
-                  color: theme.colors.text.secondary,
+                  color: isActivePath(item.path) ? theme.services.travel.primary : theme.colors.text.secondary,
                   fontSize: '0.95rem',
+                  fontWeight: isActivePath(item.path) ? '600' : '400',
                   cursor: 'pointer',
                   padding: `${theme.spacing.xs} ${theme.spacing.sm}`,
                   borderRadius: theme.borderRadius.sm,
                   transition: theme.transitions.medium
+                }}
+                onMouseEnter={(e) => {
+                  if (!isActivePath(item.path)) e.currentTarget.style.color = theme.colors.text.primary;
+                }}
+                onMouseLeave={(e) => {
+                  if (!isActivePath(item.path)) e.currentTarget.style.color = theme.colors.text.secondary;
                 }}
               >
                 {item.name}
@@ -289,13 +302,13 @@ const TravelHeader = () => {
                   setIsMobileMenuOpen(false);
                 }}
                 style={{
-                  background: item.active ? theme.colors.dark.card : 'transparent',
-                  border: item.active ? `1px solid ${theme.services.travel.primary}40` : 'none',
-                  color: item.active ? theme.services.travel.primary : theme.colors.text.secondary,
+                  background: isActivePath(item.path) ? theme.colors.dark.card : 'transparent',
+                  border: isActivePath(item.path) ? `1px solid ${theme.services.travel.primary}40` : 'none',
+                  color: isActivePath(item.path) ? theme.services.travel.primary : theme.colors.text.secondary,
                   padding: theme.spacing.md,
                   borderRadius: theme.borderRadius.md,
                   fontSize: '1rem',
-                  fontWeight: item.active ? '600' : '400',
+                  fontWeight: isActivePath(item.path) ? '600' : '400',
                   cursor: 'pointer',
                   textAlign: 'left',
                   transition: theme.transitions.medium,

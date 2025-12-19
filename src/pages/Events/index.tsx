@@ -1,5 +1,6 @@
 // pages/Events.jsx
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { theme, createServiceBackground } from '../../utils/theme';
 import EventsHeader from './eventHeader';
 import Footer from '../../components/footer';
@@ -11,6 +12,7 @@ import { eventsFAQs } from '../../content/faqs';
 
 const Events = () => {
   const isMobile = useIsMobile();
+  const navigate = useNavigate();
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [hoveredService, setHoveredService] = useState(null);
   const [activeTestimonial, setActiveTestimonial] = useState(0);
@@ -262,6 +264,7 @@ const Events = () => {
                 e.target.style.transform = 'translateY(0)';
                 e.target.style.boxShadow = `0 8px 25px ${theme.services.events.primary}35`;
               }}
+              onClick={() => navigate('/contact-event', { state: { autofocus: true } })}
             >
               Plan Your Event
             </button>
@@ -289,6 +292,7 @@ const Events = () => {
                 e.target.style.color = theme.services.events.primary;
                 e.target.style.transform = 'translateY(0)';
               }}
+              onClick={() => navigate('/eventimages')}
             >
               View Portfolio
             </button>

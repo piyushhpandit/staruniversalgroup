@@ -20,6 +20,13 @@ const Travel = () => {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [hoveredService, setHoveredService] = useState(null);
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
+  const tourRoutes = ['/buddhacircuit', '/holidaypackage', '/india', '/nepal'];
+
+  const goToRandomTourPage = () => {
+    const idx = Math.floor(Math.random() * tourRoutes.length);
+    const selected = tourRoutes[idx];
+    navigate(selected);
+  };
 
   useEffect(() => {
     const handleMouseMove = (e) => {
@@ -288,7 +295,7 @@ const Travel = () => {
           e.target.style.transform = "scale(1.05)";
           e.target.style.boxShadow = `0 20px 40px ${theme.colors.primary.magenta}40`;
         }}
-        onClick={() => navigate('/contact-travel')}
+        onClick={() => navigate('/contact-travel', { state: { autofocus: true } })}
         onMouseLeave={(e) => {
           e.target.style.transform = "scale(1)";
           e.target.style.boxShadow = `0 10px 30px ${theme.colors.primary.magenta}30`;
@@ -315,6 +322,7 @@ const Travel = () => {
         onMouseLeave={(e) => {
           e.target.style.transform = "scale(1)";
         }}
+        onClick={goToRandomTourPage}
       >
         Explore Services
       </button>
@@ -801,7 +809,8 @@ const Travel = () => {
                 onMouseLeave={(e) => {
                   e.target.style.transform = 'scale(1)';
                   e.target.style.boxShadow = 'none';
-                }}>
+                }}
+                onClick={() => navigate('/contact-travel', { state: { autofocus: true } })}>
                 Book Now
               </button>
               <div style={{

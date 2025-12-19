@@ -1,22 +1,30 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import theme from '../../utils/theme';
 import { useIsMobile } from '../../hooks/useMediaQuery';
 import { sendFoundationInquiry } from '../../api/contactService';
 
-const ContactFoundation = () => {
+const ContactFoundation = ({ embedded = false, defaultInquiryType = '' }) => {
   const isMobile = useIsMobile();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     phone: '',
     organization: '',
-    inquiryType: '',
+    inquiryType: defaultInquiryType || '',
     donationAmount: '',
     message: ''
   });
   const [errors, setErrors] = useState({});
   const [status, setStatus] = useState({ type: '', message: '' });
   const [loading, setLoading] = useState(false);
+
+  // Allow parent pages (like /foundation) to preselect inquiry type (e.g. volunteer/partnership)
+  useEffect(() => {
+    if (!defaultInquiryType) return;
+    setFormData((prev) => ({ ...prev, inquiryType: defaultInquiryType }));
+    // Clear inquiryType validation error if it was set
+    setErrors((prev) => (prev?.inquiryType ? { ...prev, inquiryType: '' } : prev));
+  }, [defaultInquiryType]);
 
   // Validation functions
   const validateEmail = (email) => {
@@ -129,19 +137,21 @@ const ContactFoundation = () => {
 
   return (
     <div style={{
-      minHeight: '100vh',
-      background: `linear-gradient(135deg, ${theme.colors.dark.primary} 0%, ${theme.colors.dark.secondary} 50%, ${theme.colors.dark.tertiary} 100%)`,
-      padding: isMobile ? '2rem 1rem' : '3rem 1rem',
+      minHeight: embedded ? 'auto' : '100vh',
+      background: embedded
+        ? 'transparent'
+        : `linear-gradient(135deg, ${theme.colors.dark.primary} 0%, ${theme.colors.dark.secondary} 50%, ${theme.colors.dark.tertiary} 100%)`,
+      padding: embedded ? 0 : (isMobile ? '2rem 1rem' : '3rem 1rem'),
       fontFamily: "'Inter', sans-serif"
     }}>
       <div style={{ maxWidth: '800px', margin: '0 auto' }}>
         <div style={{
           textAlign: 'center',
-          marginBottom: isMobile ? '2rem' : '3rem'
+          marginBottom: embedded ? (isMobile ? '1.5rem' : '2rem') : (isMobile ? '2rem' : '3rem')
         }}>
           <div style={{ fontSize: isMobile ? '3rem' : '4rem', marginBottom: '1rem' }}>{theme.services.foundation.icon}</div>
           <h1 style={{
-            fontSize: isMobile ? '1.8rem' : '2.5rem',
+            fontSize: embedded ? (isMobile ? '1.6rem' : '2.2rem') : (isMobile ? '1.8rem' : '2.5rem'),
             fontWeight: '700',
             background: theme.services.foundation.gradient,
             WebkitBackgroundClip: 'text',
@@ -159,7 +169,7 @@ const ContactFoundation = () => {
           backdropFilter: 'blur(20px)',
           border: `1px solid ${theme.colors.border.default}`,
           borderRadius: '1.5rem',
-          padding: isMobile ? '1.5rem' : '2.5rem',
+          padding: embedded ? (isMobile ? '1.25rem' : '2rem') : (isMobile ? '1.5rem' : '2.5rem'),
           boxShadow: '0 25px 50px rgba(0, 0, 0, 0.3)'
         }}>
           <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: isMobile ? '1rem' : '1.5rem', marginBottom: '1.5rem' }}>

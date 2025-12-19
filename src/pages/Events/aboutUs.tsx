@@ -15,6 +15,7 @@ import {
     Globe,
     Trophy
 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import EventsHeader from './eventHeader';
 import Footer from '../../components/footer';
 import hero from '../../assets/wedding hero.jpg'
@@ -78,6 +79,7 @@ const theme = {
 };
 
 const AboutUs = () => {
+    const navigate = useNavigate();
     const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
     const [activeObjective, setActiveObjective] = useState(0);
     const [hoveredService, setHoveredService] = useState(null);
@@ -321,7 +323,8 @@ const AboutUs = () => {
                             fontSize: '16px'
                         }}
                             onMouseEnter={(e) => e.target.style.transform = 'scale(1.05)'}
-                            onMouseLeave={(e) => e.target.style.transform = 'scale(1)'}>
+                            onMouseLeave={(e) => e.target.style.transform = 'scale(1)'}
+                            onClick={() => navigate('/eventimages')}>
                             Our Services <ArrowRight size={20} />
                         </button>
                     </div>

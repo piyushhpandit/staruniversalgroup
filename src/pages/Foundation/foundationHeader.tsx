@@ -1,12 +1,13 @@
 // components/FoundationHeader.jsx
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { theme } from '../../utils/theme';
 import logo from '../../assets/logo.png';
 import { useIsMobile } from '../../hooks/useMediaQuery';
 
 const FoundationHeader = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const isMobile = useIsMobile();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -21,12 +22,14 @@ const FoundationHeader = () => {
 
   const navItems = [
     { name: 'Home', path: '/' },
-    { name: 'Foundation', path: '/foundation', active: true },
+    { name: 'Foundation', path: '/foundation' },
     { name: 'About Us', path: '/foundationaboutus' },
     { name: 'Gallery', path: '/foundationgallery' },
     { name: 'Donations', path: '/donations' },
     { name: 'Contact', path: '/contact-foundation' }
   ];
+
+  const isActivePath = (path: string) => location.pathname === path;
 
   return (
     <header
@@ -118,9 +121,9 @@ const FoundationHeader = () => {
               style={{
                 background: 'transparent',
                 border: 'none',
-                color: item.active ? theme.services.foundation.primary : theme.colors.text.secondary,
+                color: isActivePath(item.path) ? theme.services.foundation.primary : theme.colors.text.secondary,
                 fontSize: '0.95rem',
-                fontWeight: item.active ? '600' : '400',
+                fontWeight: isActivePath(item.path) ? '600' : '400',
                 cursor: 'pointer',
                 padding: `${theme.spacing.xs} ${theme.spacing.sm}`,
                 borderRadius: theme.borderRadius.sm,
@@ -129,20 +132,20 @@ const FoundationHeader = () => {
                 fontFamily: theme.typography.fontFamily
               }}
               onMouseEnter={(e) => {
-                if (!item.active) {
+                if (!isActivePath(item.path)) {
                   e.target.style.color = theme.colors.text.primary;
                   e.target.style.background = theme.colors.dark.card;
                 }
               }}
               onMouseLeave={(e) => {
-                if (!item.active) {
+                if (!isActivePath(item.path)) {
                   e.target.style.color = theme.colors.text.secondary;
                   e.target.style.background = 'transparent';
                 }
               }}
             >
               {item.name}
-              {item.active && (
+              {isActivePath(item.path) && (
                 <div
                   style={{
                     position: 'absolute',
@@ -267,13 +270,13 @@ const FoundationHeader = () => {
                   setIsMobileMenuOpen(false);
                 }}
                 style={{
-                  background: item.active ? theme.colors.dark.card : 'transparent',
-                  border: item.active ? `1px solid ${theme.services.foundation.primary}40` : 'none',
-                  color: item.active ? theme.services.foundation.primary : theme.colors.text.secondary,
+                  background: isActivePath(item.path) ? theme.colors.dark.card : 'transparent',
+                  border: isActivePath(item.path) ? `1px solid ${theme.services.foundation.primary}40` : 'none',
+                  color: isActivePath(item.path) ? theme.services.foundation.primary : theme.colors.text.secondary,
                   padding: theme.spacing.md,
                   borderRadius: theme.borderRadius.md,
                   fontSize: '1rem',
-                  fontWeight: item.active ? '600' : '400',
+                  fontWeight: isActivePath(item.path) ? '600' : '400',
                   cursor: 'pointer',
                   textAlign: 'left',
                   transition: theme.transitions.medium,

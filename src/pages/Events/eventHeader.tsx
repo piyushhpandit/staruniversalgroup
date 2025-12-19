@@ -1,12 +1,13 @@
 // components/EventsHeader.jsx
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { theme } from '../../utils/theme';
 import logo from '../../assets/logo.png';
 import { useIsMobile } from '../../hooks/useMediaQuery';
 
 const EventsHeader = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const isMobile = useIsMobile();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -20,12 +21,17 @@ const EventsHeader = () => {
   }, []);
 
   const navItems = [
-    { name: 'Home', path: '/events', active: true },
+    { name: 'Home', path: '/events' },
     { name: 'About Us', path: '/aboutus' },
     { name: 'Images', path: '/eventimages' },
     { name: 'Clients', path: '/eventclients' },
     { name: 'Contact', path: '/contact-event' }
   ];
+
+  const isActivePath = (path) => {
+    if (path === '/events') return location.pathname === '/events' || location.pathname.startsWith('/events/');
+    return location.pathname === path;
+  };
 
   return (
     <header
@@ -117,9 +123,9 @@ const EventsHeader = () => {
               style={{
                 background: 'transparent',
                 border: 'none',
-                color: item.active ? theme.services.events.primary : theme.colors.text.secondary,
+                color: isActivePath(item.path) ? theme.services.events.primary : theme.colors.text.secondary,
                 fontSize: '0.95rem',
-                fontWeight: item.active ? '600' : '400',
+                fontWeight: isActivePath(item.path) ? '600' : '400',
                 cursor: 'pointer',
                 padding: `${theme.spacing.xs} ${theme.spacing.sm}`,
                 borderRadius: theme.borderRadius.sm,
@@ -128,20 +134,20 @@ const EventsHeader = () => {
                 fontFamily: theme.typography.fontFamily
               }}
               onMouseEnter={(e) => {
-                if (!item.active) {
+                if (!isActivePath(item.path)) {
                   e.target.style.color = theme.colors.text.primary;
                   e.target.style.background = theme.colors.dark.card;
                 }
               }}
               onMouseLeave={(e) => {
-                if (!item.active) {
+                if (!isActivePath(item.path)) {
                   e.target.style.color = theme.colors.text.secondary;
                   e.target.style.background = 'transparent';
                 }
               }}
             >
               {item.name}
-              {item.active && (
+              {isActivePath(item.path) && (
                 <div
                   style={{
                     position: 'absolute',
@@ -266,13 +272,13 @@ const EventsHeader = () => {
                   setIsMobileMenuOpen(false);
                 }}
                 style={{
-                  background: item.active ? theme.colors.dark.card : 'transparent',
-                  border: item.active ? `1px solid ${theme.services.events.primary}40` : 'none',
-                  color: item.active ? theme.services.events.primary : theme.colors.text.secondary,
+                  background: isActivePath(item.path) ? theme.colors.dark.card : 'transparent',
+                  border: isActivePath(item.path) ? `1px solid ${theme.services.events.primary}40` : 'none',
+                  color: isActivePath(item.path) ? theme.services.events.primary : theme.colors.text.secondary,
                   padding: theme.spacing.md,
                   borderRadius: theme.borderRadius.md,
                   fontSize: '1rem',
-                  fontWeight: item.active ? '600' : '400',
+                  fontWeight: isActivePath(item.path) ? '600' : '400',
                   cursor: 'pointer',
                   textAlign: 'left',
                   transition: theme.transitions.medium,
