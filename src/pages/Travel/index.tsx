@@ -10,6 +10,9 @@ import TravelHeader from './travelHeader';
 import hero2 from '../../assets/nepal-tour.jpg'
 import { useIsMobile } from '../../hooks/useMediaQuery';
 import { useNavigate } from 'react-router';
+import SeoContentBlock from '../../components/SeoContentBlock';
+import { travelSeoCopy } from '../../content/seoCopy';
+import { travelFAQs } from '../../content/faqs';
 
 const Travel = () => {
   const isMobile = useIsMobile();
@@ -234,9 +237,9 @@ const Travel = () => {
         padding: isMobile ? "0 1rem" : "0"
       }}
     >
-      Travel Beyond
+      Tour and Travel Services in India
       <br />
-      Boundaries
+      Nepal Tour Packages
     </h1>
     <p
       style={{
@@ -819,6 +822,12 @@ const Travel = () => {
       </section>
 
       {/* Footer Section */}
+      <SeoContentBlock
+        copy={travelSeoCopy}
+        faqs={travelFAQs}
+        accentColor={`${theme.colors.primary.magenta}35`}
+        h2Label="India & Nepal Tour Packages (Buddha Circuit Tour, Holiday Tours)"
+      />
       <Footer />
     </div>
   );

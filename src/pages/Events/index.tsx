@@ -5,6 +5,9 @@ import EventsHeader from './eventHeader';
 import Footer from '../../components/footer';
 import hero from '../../assets/wedding hero.jpg'
 import { useIsMobile } from '../../hooks/useMediaQuery';
+import SeoContentBlock from '../../components/SeoContentBlock';
+import { eventsSeoCopy } from '../../content/seoCopy';
+import { eventsFAQs } from '../../content/faqs';
 
 const Events = () => {
   const isMobile = useIsMobile();
@@ -209,7 +212,7 @@ const Events = () => {
               padding: isMobile ? '0 1rem' : '0'
             }}
           >
-            Star Universal Events
+            Star Universal Events — Best Event Company in Bihar
           </h1>
           <p
             style={{
@@ -679,6 +682,12 @@ style = {{
   </div>
       </section >
 
+  <SeoContentBlock
+    copy={eventsSeoCopy}
+    faqs={eventsFAQs}
+    accentColor={`${theme.services.events.primary}40`}
+    h2Label="Wedding & Event Management in Bihar (Patna, Muzaffarpur and more)"
+  />
   <Footer />
     </div >
   );

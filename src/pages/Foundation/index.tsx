@@ -14,6 +14,9 @@ import news5 from '../../assets/news/newspaper5.jpg'
 import news6 from '../../assets/news/newspaper6.jpg'
 import Footer from '../../components/footer';
 import FoundationHeader from './foundationHeader';
+import SeoContentBlock from '../../components/SeoContentBlock';
+import { foundationSeoCopy } from '../../content/seoCopy';
+import { foundationFAQs } from '../../content/faqs';
 
 // Theme from the provided theme.js
 const theme = {
@@ -262,7 +265,7 @@ const Foundation = () => {
         color: "#fff",
       }}
     >
-      Star Universal <br />
+      NGO in Bihar <br />
       <span
         style={{
           background: theme.services.foundation.gradient,
@@ -271,7 +274,7 @@ const Foundation = () => {
           color: "transparent",
         }}
       >
-        Foundation
+        Star Universal Foundation
       </span>
     </h1>
 
@@ -825,6 +828,12 @@ const Foundation = () => {
 
       {/* Footer */}
 
+      <SeoContentBlock
+        copy={foundationSeoCopy}
+        faqs={foundationFAQs}
+        accentColor="rgba(251, 191, 36, 0.35)"
+        h2Label="Foundation Working in Bihar (Social Welfare Initiatives)"
+      />
       <Footer />
     </div>
   );

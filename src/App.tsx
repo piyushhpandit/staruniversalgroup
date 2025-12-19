@@ -20,6 +20,8 @@ import EventsWeddingPlannerPatna from './pages/Seo/EventsWeddingPlannerPatna';
 import EventsLocationLanding from './pages/Seo/EventsLocationLanding';
 import EventsCityServiceDynamic from './pages/Seo/EventsCityServiceDynamic';
 import SeoShell from './seo/SeoShell';
+import { eventsFAQs, foundationFAQs, travelFAQs } from './content/faqs';
+import { faqPage } from './seo/schema';
 
 
 function App() {
@@ -44,6 +46,7 @@ function App() {
             title="Event Management Company in Bihar | Star Universal Group"
             description="Star Universal Group plans weddings, corporate events, and celebrations across Bihar with premium décor, trusted vendors, and seamless on-ground coordination."
             canonicalPath="/events"
+            jsonLd={[{ id: 'faq', data: faqPage(eventsFAQs) }]}
           >
             <Events />
           </SeoShell>
@@ -56,6 +59,7 @@ function App() {
             title="Foundation Working in Bihar | Star Universal Group"
             description="Star Universal Foundation supports community initiatives in Bihar—education, healthcare and social impact programs. Learn about our work and how to contribute."
             canonicalPath="/foundation"
+            jsonLd={[{ id: 'faq', data: faqPage(foundationFAQs) }]}
           >
             <Foundation />
           </SeoShell>
@@ -68,6 +72,7 @@ function App() {
             title="Tour & Travel Services in India | Nepal Tour Packages | Star Universal"
             description="Book curated tour packages for India and Nepal with Star Universal—reliable planning, clear itineraries, and helpful support from start to finish."
             canonicalPath="/travel"
+            jsonLd={[{ id: 'faq', data: faqPage(travelFAQs) }]}
           >
             <Travel />
           </SeoShell>
